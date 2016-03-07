@@ -1,6 +1,6 @@
-package capstone.boardgame.gameloop;
+package capstone.boardgame.main;
 
-import capstone.boardgame.GOP.AbsGameLoop;
+import capstone.boardgame.GUI.AbsGameLoop;
 import capstone.boardgame.gamestate.GameStateManager;
 
 /**
@@ -8,6 +8,7 @@ import capstone.boardgame.gamestate.GameStateManager;
  */
 public class GameLoop extends AbsGameLoop {
     GameStateManager gsm;
+    public static Assets assets = new Assets();
 
     public GameLoop(int width, int height) {
         super(width, height);
@@ -15,11 +16,16 @@ public class GameLoop extends AbsGameLoop {
 
     @Override
     public void init() {
-        gsm = new GameStateManager();
+        assets.init();
 
+        gsm = new GameStateManager();
         gsm.init();
 
         super.init();
+
+        System.out.print("GameLoop: " + getParent().getWidth() + " " + getParent().getHeight() + " " + ((float)getWidth()/width) + " " + ((float)getHeight()/height));
+
+        scale((float)getWidth() / width, (float)getHeight() / height);
     }
 
     @Override

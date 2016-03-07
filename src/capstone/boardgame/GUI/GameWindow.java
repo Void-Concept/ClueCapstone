@@ -1,4 +1,4 @@
-package capstone.boardgame.GOP;
+package capstone.boardgame.GUI;
 
 import javax.swing.*;
 import java.awt.*;

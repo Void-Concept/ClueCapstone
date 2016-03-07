@@ -1,4 +1,4 @@
-package capstone.boardgame.GOP;
+package capstone.boardgame.GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +14,8 @@ public class AbsGameLoop extends JPanel implements Runnable {
     private int fps;
     private int tps;
 
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
 
     public Graphics2D g2d;
     private BufferedImage img;
@@ -26,6 +26,12 @@ public class AbsGameLoop extends JPanel implements Runnable {
         this.width = width;
         this.height = height;
 
+        setPreferredSize(new Dimension(width, height));
+        setFocusable(false);
+        requestFocus();
+    }
+
+    protected void setScaledSize(int width, int height) {
         setPreferredSize(new Dimension(width, height));
         setFocusable(false);
         requestFocus();
@@ -106,11 +112,28 @@ public class AbsGameLoop extends JPanel implements Runnable {
         g2.dispose();
     }
 
-
-
-
-
-
+    public void scale(float x, float y) {
+        img = new BufferedImage((int)(width * x), (int)(height * y), BufferedImage.TYPE_INT_RGB);
+        g2d = (Graphics2D)img.getGraphics();
+        g2d.scale(x, y);
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

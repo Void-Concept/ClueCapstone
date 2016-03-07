@@ -1,4 +1,4 @@
-package capstone.boardgame.GOP;
+package capstone.boardgame.GUI;
 
 import java.awt.image.BufferedImage;
 

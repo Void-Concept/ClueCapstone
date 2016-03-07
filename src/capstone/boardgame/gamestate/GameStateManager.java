@@ -1,7 +1,5 @@
 package capstone.boardgame.gamestate;
 
-import gamestates.LevelLoader;
-
 import java.awt.*;
 import java.util.Stack;
 

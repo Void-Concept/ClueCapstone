@@ -1,4 +1,4 @@
-package capstone.boardgame.GOP;
+package capstone.boardgame.GUI;
 
 /**
  * Created by Kyle on 3/1/2016.
