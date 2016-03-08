@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
  * Created by Kyle on 3/1/2016.
  */
 public class SpriteSheet {
+    private static final String tag = "SpriteSheet";
     private BufferedImage spriteSheet;
 
     public SpriteSheet() {

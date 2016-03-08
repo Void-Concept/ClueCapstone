@@ -4,6 +4,7 @@ package capstone.boardgame.GUI;
  * Created by Kyle on 3/1/2016.
  */
 public class Vector2F {
+    private static final String tag = "Vector2F";
     public float xpos;
     public float ypos;
 

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
  * Created by Kyle on 3/1/2016.
  */
 public class AbsGameLoop extends JPanel implements Runnable {
+    private static final String tag = "AbsGameLoop";
     private Thread thread;
     private boolean running;
 

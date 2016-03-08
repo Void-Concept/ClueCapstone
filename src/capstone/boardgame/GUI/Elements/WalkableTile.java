@@ -8,6 +8,7 @@ import java.util.HashMap;
  * Created by Kyle on 3/7/2016.
  */
 public class WalkableTile extends Tile {
+    private static final String tag = "WalkableTile";
     public static final int UP = 0;
     public static final int DOWN = 1;
     public static final int LEFT = 2;

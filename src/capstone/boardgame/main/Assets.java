@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
  * Created by Kyle on 3/6/2016.
  */
 public class Assets {
+    private static final String tag = "Assets";
     private SpriteSheet blocks = new SpriteSheet();
 
     private BufferedImage stone_1;

@@ -9,6 +9,7 @@ import java.net.URL;
  * Created by Kyle on 3/1/2016.
  */
 public class LoadImageFrom {
+    private static final String tag = "LoadImageFrom";
     public static BufferedImage LoadImageFrom(Class<?> classFile, String path) {
         URL url = classFile.getResource(path);
         BufferedImage img = null;

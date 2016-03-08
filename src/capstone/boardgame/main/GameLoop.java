@@ -7,6 +7,7 @@ import capstone.boardgame.gamestate.GameStateManager;
  * Created by Kyle on 3/1/2016.
  */
 public class GameLoop extends AbsGameLoop {
+    private static final String tag = "GameLoop";
     GameStateManager gsm;
     public static Assets assets = new Assets();
 
@@ -23,7 +24,7 @@ public class GameLoop extends AbsGameLoop {
 
         super.init();
 
-        System.out.print("GameLoop: " + getParent().getWidth() + " " + getParent().getHeight() + " " + ((float)getWidth()/width) + " " + ((float)getHeight()/height));
+        Log.d(tag, getParent().getWidth() + " " + getParent().getHeight() + " " + ((float)getWidth()/width) + " " + ((float)getHeight()/height));
 
         scale((float)getWidth() / width, (float)getHeight() / height);
     }

@@ -8,6 +8,7 @@ import java.util.Calendar;
  * Created by Kyle on 2/26/2016.
  */
 public class Log {
+    private static final String tag = "Log";
     private static Calendar cal = Calendar.getInstance();
     private static DateFormat df = DateFormat.getDateInstance();
     private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");

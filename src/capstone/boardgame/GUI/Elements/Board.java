@@ -27,8 +27,7 @@ public class Board extends BGDrawable {
     private Map<Integer, BufferedImage> tileState = new HashMap<>();
 
     public Board(int x, int y, int width, int height, int tilesX, int tilesY) {
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
+        super(x, y, width, height);
         this.tilesX = tilesX; this.tilesY = tilesY;
         init();
     }
@@ -110,6 +109,7 @@ public class Board extends BGDrawable {
 
         int state;
         Color bg = new Color(0f, 0f, 0f, 0f);
+        g.setColor(color);
 
         for (int w = 0; w < tilesX; w++) {
             for (int h = 0; h < tilesY; h++) {
@@ -117,15 +117,19 @@ public class Board extends BGDrawable {
                 try {
                     BufferedImage img =  tileState.get(state);
 
-                    BufferedImage redversion = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                    Graphics2D g2d = (Graphics2D)redversion.getGraphics();
-                    g2d.setColor(Color.red);
-                    g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
+                    if (false) {
+                        BufferedImage redversion = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g2d = (Graphics2D) redversion.getGraphics();
+                        g2d.setColor(Color.red);
+                        g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
 
-                    g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f));
-                    g2d.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
+                        g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f));
+                        g2d.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
 
-                    g.drawImage(redversion, x + tileWidth * w, y + tileHeight * h, tileWidth, tileHeight, bg, null);
+                        g.drawImage(redversion, x + tileWidth * w, y + tileHeight * h, tileWidth, tileHeight, bg, null);
+                    } else {
+                        g.drawImage(img, x + tileWidth * w, y + tileHeight * h, tileWidth, tileHeight, bg, null);
+                    }
                 } catch (Exception e) {
                 }
             }

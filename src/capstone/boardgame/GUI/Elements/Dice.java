@@ -10,13 +10,13 @@ import java.util.Random;
  * Created by Kyle on 3/6/2016.
  */
 public class Dice extends BGDrawable {
+    private static final String tag = "Dice";
     private int maxRoll = 6;
     private int currRoll = 1;
     private Random rand = new Random();
 
     public Dice(int x, int y, int width, int height, int maxRoll) {
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
+        super(x, y, width, height);
         this.maxRoll = maxRoll;
     }
 
@@ -35,6 +35,9 @@ public class Dice extends BGDrawable {
 
     @Override
     public void render(Graphics2D g) {
+        g.setColor(color);
+        g.setFont(font);
+
         g.drawRect(x, y, width, height);
         int fontSize = g.getFont().getSize();
         int yOff = (int)((fontSize*.75 + height)/2);

@@ -7,6 +7,7 @@ import java.awt.*;
  * Created by Kyle on 3/1/2016.
  */
 public class GameWindow extends JFrame {
+    private static final String tag = "GameWindow";
     boolean fse = false;
     int fsm = 0;
     GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];

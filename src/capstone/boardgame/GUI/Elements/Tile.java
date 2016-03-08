@@ -7,12 +7,11 @@ import java.awt.image.BufferedImage;
  * Created by Kyle on 3/7/2016.
  */
 public class Tile extends BGDrawable {
-
+    private static final String tag = "Tile";
     private BufferedImage img;
 
     public Tile(int x, int y, int width, int height, BufferedImage img) {
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
+        super(x, y, width, height);
         this.img = img;
     }
 
@@ -23,8 +22,11 @@ public class Tile extends BGDrawable {
 
     @Override
     public void render(Graphics2D g) {
+        g.setColor(color);
         if (img != null) {
             g.drawImage(img, x, y, width, height, null);
+        } else {
+            g.drawRect(x, y, width, height);
         }
     }
 }

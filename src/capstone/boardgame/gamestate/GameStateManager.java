@@ -9,6 +9,7 @@ import java.util.Stack;
  * Created by Kyle on 3/1/2016.
  */
 public class GameStateManager {
+    private static final String tag = "GameStateManager";
     public static Stack<GameState> states;
 
     public GameStateManager() {
