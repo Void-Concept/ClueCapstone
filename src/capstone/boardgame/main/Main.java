@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         GameWindow frame = new GameWindow("Board Games", width, height);
-        frame.setFullScreen(0);
+        frame.setFullScreen(1);
         frame.add(new GameLoop(width, height));
         frame.setVisible(true);
     }

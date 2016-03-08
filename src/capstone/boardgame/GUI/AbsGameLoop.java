@@ -82,8 +82,8 @@ public class AbsGameLoop extends JPanel implements Runnable {
 
             if (System.currentTimeMillis() - lastTime >= 1000) {
                 lastTimer += 1000;
-                tps = frames;
-                fps = ticks;
+                tps = ticks;
+                fps = frames;
                 frames = 0;
                 ticks = 0;
             }
