@@ -1,6 +1,9 @@
 package capstone.boardgame.GUI.Elements;
 
+import capstone.boardgame.main.Log;
+
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 /**
@@ -26,11 +29,6 @@ public class Dice extends BGDrawable {
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
     public void tick(double deltaTime) {
 
     }
@@ -40,6 +38,9 @@ public class Dice extends BGDrawable {
         g.drawRect(x, y, width, height);
         int fontSize = g.getFont().getSize();
         int yOff = (int)((fontSize*.75 + height)/2);
-        g.drawString(""+currRoll, x + 3, y + yOff);
+        FontMetrics fm = g.getFontMetrics();
+        Rectangle2D r2d = fm.getStringBounds(""+currRoll, g);
+
+        g.drawString(""+currRoll, x + (int)(width/2 - r2d.getWidth()/2), y + yOff);
     }
 }

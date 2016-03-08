@@ -7,19 +7,16 @@ import java.util.HashMap;
 /**
  * Created by Kyle on 3/7/2016.
  */
-public class WalkableTile extends BGDrawable {
+public class WalkableTile extends Tile {
     public static final int UP = 0;
     public static final int DOWN = 1;
     public static final int LEFT = 2;
     public static final int RIGHT = 3;
 
     private HashMap<Integer, WalkableTile> walkDir = new HashMap<>();
-    private BufferedImage img;
 
     public WalkableTile(int x, int y, int width, int height, BufferedImage img) {
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
-        this.img = img;
+        super(x, y, width, height, img);
     }
 
     public void addDirection(int dir, WalkableTile tile) {
@@ -31,19 +28,12 @@ public class WalkableTile extends BGDrawable {
     }
 
     @Override
-    public void init() {
-        //nothing to do
-    }
-
-    @Override
     public void tick(double deltaTime) {
-        //nothing to do
+        super.tick(deltaTime);
     }
 
     @Override
     public void render(Graphics2D g) {
-        if (img != null) {
-            g.drawImage(img, x, y, width, height, null);
-        }
+        super.render(g);
     }
 }

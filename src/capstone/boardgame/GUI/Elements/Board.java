@@ -3,6 +3,9 @@ package capstone.boardgame.GUI.Elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageFilter;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -45,7 +48,6 @@ public class Board extends BGDrawable {
                 sLine = new ArrayList<>(Arrays.asList(line.split(",")));
                 aList = new ArrayList<>();
                 for (String str : sLine) {
-                    //Log.d(tag, "Input: " + str);
                     aList.add(Integer.parseInt(str));
                 }
                 list.add(aList);
@@ -57,7 +59,6 @@ public class Board extends BGDrawable {
 
             for (int w = 0; w < tilesX; w++) {
                 for (int h = 0; h < tilesY; h++) {
-                    Log.d(tag, "Output: " + list.get(h).get(w));
                     board[w][h] = list.get(h).get(w);
                 }
             }
@@ -68,7 +69,6 @@ public class Board extends BGDrawable {
         }
     }
 
-    @Override
     public void init() {
         board = new Integer[tilesX][tilesY];
         for (int w = 0; w < tilesX; w++) {
@@ -115,9 +115,17 @@ public class Board extends BGDrawable {
             for (int h = 0; h < tilesY; h++) {
                 state = getState(w, h);
                 try {
-                    //BufferedImage img = stateTile.get(state);
                     BufferedImage img =  tileState.get(state);
-                    g.drawImage(img, x + tileWidth * w, y + tileHeight * h, tileWidth, tileHeight, bg, null);
+
+                    BufferedImage redversion = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g2d = (Graphics2D)redversion.getGraphics();
+                    g2d.setColor(Color.red);
+                    g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
+
+                    g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f));
+                    g2d.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
+
+                    g.drawImage(redversion, x + tileWidth * w, y + tileHeight * h, tileWidth, tileHeight, bg, null);
                 } catch (Exception e) {
                 }
             }

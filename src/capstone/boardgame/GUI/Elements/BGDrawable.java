@@ -24,8 +24,6 @@ public abstract class BGDrawable {
         this.height = height;
     }
 
-
-    abstract void init();
     abstract void tick(double deltaTime);
     abstract void render(Graphics2D g);
 }
