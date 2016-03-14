@@ -2,20 +2,22 @@ package capstone.boardgame.gamestate.ingame;
 
 import capstone.boardgame.GUI.Elements.*;
 import capstone.boardgame.GUI.Elements.Label;
+import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.GUI.LoadImageFrom;
 import capstone.boardgame.GUI.SpriteSheet;
+import capstone.boardgame.gamedata.GameObject.Player;
 import capstone.boardgame.gamestate.GameState;
 import capstone.boardgame.gamestate.GameStateManager;
 import capstone.boardgame.main.Main;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 /**
  * Created by Kyle on 3/1/2016.
  */
 public class LevelLoader extends GameState {
     private static final String tag = "LevelLoader";
+    GameGUIContainer gui = new GameGUIContainer();
     Board board;
     WalkableTile tile;
     Dice dice;
@@ -29,16 +31,16 @@ public class LevelLoader extends GameState {
     @Override
     public void init() {
         BGDrawable.setDefaultColor(Color.cyan);
-        //board = new Board(10, 10, 256, 256, 16, 16);
-        //board.init();
+
         board = new Board(320, 40, 640, 640, "ClueBoard.csv");
         SpriteSheet sheet = new SpriteSheet();
         sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "spritesheet.png"));
         board.setStateTile(1, sheet.getTile(0, 0, 8, 8));
 
-        tile = new WalkableTile(0, 0, 16, 16, sheet.getTile(0,0,8,8));
         dice = new Dice(200, 200, 25, 25, 20);
         dice.roll();
+
+        tile = new WalkableTile(0, 0, 16, 16, sheet.getTile(0,0,8,8));
         tileManager = new TileManager();
         tileManager.addTile(tile);
 
@@ -49,6 +51,12 @@ public class LevelLoader extends GameState {
 
         label = new Label(200, 200, "Hello World");
         label.setColor(Color.gray);
+        gui.add(board);
+        //gui.add(tile);
+        gui.add(dice);
+        gui.add(player);
+        gui.add(label);
+        gui.add(tileManager);
     }
 
     @Override
@@ -58,8 +66,8 @@ public class LevelLoader extends GameState {
 
     @Override
     public void render(Graphics2D g) {
-        g.setFont(BGDrawable.getDefaultfont());
-        g.setColor(BGDrawable.getDefaultColor());
+        gui.render(g);
+        /*
         //g.drawString("Hello World", 200, 200);
 
         label.render(g);
@@ -68,6 +76,6 @@ public class LevelLoader extends GameState {
         //tile.render(g);
         dice.render(g);
         tileManager.render(g);
-        player.render(g);
+        player.render(g);*/
     }
 }

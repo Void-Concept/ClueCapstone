@@ -34,7 +34,7 @@ public class WalkableTile extends Tile {
     }
 
     @Override
-    public void render(Graphics2D g) {
-        super.render(g);
+    public void renderComponent(Graphics2D g) {
+        super.renderComponent(g);
     }
 }

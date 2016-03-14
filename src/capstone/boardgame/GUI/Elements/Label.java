@@ -19,7 +19,7 @@ public class Label extends BGDrawable {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void renderComponent(Graphics2D g) {
         g.setFont(getFont());
         g.setColor(getColor());
 

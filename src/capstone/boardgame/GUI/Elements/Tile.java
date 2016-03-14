@@ -21,7 +21,7 @@ public class Tile extends BGDrawable {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void renderComponent(Graphics2D g) {
         g.setColor(color);
         if (img != null) {
             g.drawImage(img, x, y, width, height, null);

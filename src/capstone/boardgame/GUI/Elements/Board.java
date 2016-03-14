@@ -18,7 +18,7 @@ import capstone.boardgame.main.Log;
 /**
  * Created by Kyle on 3/6/2016.
  */
-public class Board extends BGDrawable {
+public class Board extends BGContainer {
     private static final String tag = "Board";
     private int tilesX;
     private int tilesY;
@@ -103,7 +103,7 @@ public class Board extends BGDrawable {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void renderComponent(Graphics2D g) {
         int tileWidth = width / tilesX;
         int tileHeight = height / tilesY;
 

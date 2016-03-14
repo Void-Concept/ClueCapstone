@@ -6,7 +6,10 @@ import java.awt.*;
  * Created by Kyle on 3/6/2016.
  */
 public abstract class BGDrawable {
-    private static final String tag = "BGDrawable";
+    protected String bgTag = "";
+    protected String label = "";
+    private static int currLabel = 1;
+
     protected int x;
     protected int y;
     protected int width;
@@ -17,6 +20,8 @@ public abstract class BGDrawable {
 
     protected Font font;
     protected static Font defaultfont = new Font("Arial", Font.PLAIN, 20);
+
+    protected boolean visible = true;
 
     public static void setDefaultFont(Font font) {
         defaultfont = font;
@@ -34,6 +39,8 @@ public abstract class BGDrawable {
     public BGDrawable() {
         font = defaultfont;
         color = defaultColor;
+        label = "Drawable"+currLabel;
+        currLabel++;
     }
     public BGDrawable(int x, int y, int width, int height) {
         this();
@@ -56,6 +63,20 @@ public abstract class BGDrawable {
     public void setColor(Color color) { this.color = color; }
     public void setFont(Font font) { this.font = font; }
 
+    public void setVisibility(boolean visibility) {
+        this.visible = visibility;
+    }
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setId(String label) {
+        this.label = label;
+    }
+    public String getId(){
+        return label;
+    }
+
     public int getX() { return x; }
     public int getY() { return y; }
     public int getWidth() { return width; }
@@ -64,5 +85,10 @@ public abstract class BGDrawable {
     public Font getFont() { return font; }
 
     public abstract void tick(double deltaTime);
-    public abstract void render(Graphics2D g);
+    public void render(Graphics2D g) {
+        if (visible) {
+            renderComponent(g);
+        }
+    }
+    protected abstract void renderComponent(Graphics2D g);
 }

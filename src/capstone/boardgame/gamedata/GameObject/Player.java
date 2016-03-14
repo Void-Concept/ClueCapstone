@@ -1,4 +1,4 @@
-package capstone.boardgame.gamestate.ingame;
+package capstone.boardgame.gamedata.GameObject;
 
 import capstone.boardgame.GUI.Elements.BGDrawable;
 
@@ -40,7 +40,7 @@ public class Player extends BGDrawable {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void renderComponent(Graphics2D g) {
         for (BGDrawable drawable : drawables) {
             drawable.render(g);
         }
