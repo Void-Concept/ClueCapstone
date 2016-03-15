@@ -16,7 +16,7 @@ import java.net.SocketException;
 public class WebSocketServer {
     private static Server server;
     public static void runServer() {
-        server = new Server("*", 8025, "/", SocketEndpoint.class);
+        server = new Server("*", 8080, "/", SocketEndpoint.class);
 
         try {
             server.start();
