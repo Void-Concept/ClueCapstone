@@ -45,6 +45,7 @@ public class WebServer {
 
     public static void start() {
         try {
+            Game.getInstance(); //tell Game to load resources
             Log.d(tag, "WebServer starting");
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
             server.createContext("/", new MyHandler());
