@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="aspect-ratio.css">
+</head>
+<body onresize="render()">
+	<div id="canvas-container">
+		<canvas id="gameview">Canvas not supported. Please update your browser.</canvas>
+	</div>
+</body>
+<script src="js/Label.js"></script>
+<script>
+var dimX = 1280;
+var dimY = 720;
+function render() {
+	var w = window.innerWidth - 2;
+	var h = window.innerHeight - 2;
+	var gameview = document.getElementById("gameview");
+	var wAR = w / dimX;
+	var hAR = h / dimY;
+	console.log(w + " " + h + " " + wAR + " " + hAR)
+	if (wAR < hAR) {
+		gameview.width = w;
+		gameview.height = w * dimY/dimX;
+		gameview.style.left = "0px";
+		gameview.style.top = (h/2 - gameview.height / 2) + "px";
+	} else {
+		gameview.width = h * dimX/dimY;
+		gameview.height = h;
+		gameview.style.left = (w/2 - gameview.width / 2) + "px";
+		gameview.style.top = "0px";
+	}
+	console.log(gameview.width + " " + gameview.height + " " + gameview.style.left + " " + gameview.style.top + " " + gameview.width/gameview.height)
+	var ctx = gameview.getContext("2d");
+	ctx.scale(gameview.width/dimX, gameview.height/dimY);
+	ctx.fillStyle = "#FF0000";
+	ctx.fillRect(0, 0, 150, 75);
+	var aLabel = new Label(0, 1, "Hello World");
+	aLabel.renderComponent(ctx);
+}
+render();
+
+</script>
+</html>

@@ -1,0 +1,16 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+#canvas-container {
+	position: absolute;
+}
+
+canvas {
+	position: absolute;
+	display:absolute;
+	margin:auto;
+	background: grey;
+	border: 1px solid blue;
+}

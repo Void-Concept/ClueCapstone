@@ -1,0 +1,92 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #404040;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.container {
+  max-width: 60em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.25em 1.5em;
+}
+
+.skyblue {
+  color: skyblue;
+}
+
+li {
+  color: skyblue;
+}
+li + li {
+  margin-top: 0.5em;
+}
+li span {
+  color: white;
+}
+
+p {
+  margin: 1.5em 0;
+  line-height: 1.5;
+}
+
+pre {
+  background: #666666;
+}
+
+hr {
+  border-style: dashed;
+  margin: 2em 0;
+}
+
+.box {
+  -webkit-animation: width 3s infinite alternate;
+          animation: width 3s infinite alternate;
+  background-color: skyblue;
+}
+.box span {
+  color: black;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+@-webkit-keyframes width {
+  0% {
+    width: 25%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes width {
+  0% {
+    width: 25%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.sixteen-nine {
+  position: relative;
+}
+.sixteen-nine:before {
+  display: block;
+  content: " ";
+  width: 100%;
+  padding-top: 56.25%;
+}
+.sixteen-nine > .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

@@ -28,7 +28,6 @@ public class SocketEndpoint {
     public void onMessage(Session session, String message) throws IOException {
         Log.d(tag, "onMessage: " + message);
         session.getBasicRemote().sendText(message + " (from your server)");
-        session.close();
     }
 
     @OnError
