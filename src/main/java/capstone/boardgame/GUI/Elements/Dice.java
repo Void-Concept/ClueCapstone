@@ -35,9 +35,6 @@ public class Dice extends BGDrawable {
 
     @Override
     public void renderComponent(Graphics2D g) {
-        g.setColor(color);
-        g.setFont(font);
-
         g.drawRect(x, y, width, height);
         int fontSize = g.getFont().getSize();
         int yOff = (int)((fontSize*.75 + height)/2);

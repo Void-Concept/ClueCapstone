@@ -1,19 +1,16 @@
-figure {
-	width: 36%;
-	margin: 8px auto;
+body {
+	padding: 0;
+	margin: 0;
 }
- 
-div.stretchy-wrapper {
-	width: 100%;
-	padding-bottom: 56.25%; /* 16:9 */
-	position: relative;
-	background: black;
-}
- 
-div.stretchy-wrapper > div {
+
+#canvas-container {
 	position: absolute;
-	top: 0; bottom: 0; left: 0; right: 0;
-	color: white;
-	font-size: 24px;
-	text-align: center;
+}
+
+canvas {
+	position: absolute;
+	display:absolute;
+	margin:auto;
+	background: grey;
+	border: 1px solid blue;
 }

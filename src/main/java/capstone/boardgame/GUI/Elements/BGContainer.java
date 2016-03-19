@@ -38,7 +38,7 @@ public abstract class BGContainer extends BGDrawable {
     @Override
     public void renderComponent(Graphics2D g) {
         for (BGDrawable drawable : drawables) {
-            drawable.renderComponent(g);
+            drawable.render(g);
         }
     }
 }

@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class Label extends BGDrawable {
     private static final String tag = "Label";
-    private String text;
+    protected String text;
     public Label(int x, int y, String text) {
         super(x, y, 0, 0);
         this.text = text;
@@ -19,10 +19,7 @@ public class Label extends BGDrawable {
     }
 
     @Override
-    public void renderComponent(Graphics2D g) {
-        g.setFont(getFont());
-        g.setColor(getColor());
-
+    protected void renderComponent(Graphics2D g) {
         int fontSize = getFont().getSize();
         int yOff = (int)(fontSize*.75);
 

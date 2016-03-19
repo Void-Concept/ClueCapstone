@@ -8,6 +8,7 @@
 		<canvas id="gameview">Canvas not supported. Please update your browser.</canvas>
 	</div>
 </body>
+<script src="js/BGDrawable.js"></script>
 <script src="js/Label.js"></script>
 <script>
 var dimX = 1280;
@@ -18,7 +19,6 @@ function render() {
 	var gameview = document.getElementById("gameview");
 	var wAR = w / dimX;
 	var hAR = h / dimY;
-	console.log(w + " " + h + " " + wAR + " " + hAR)
 	if (wAR < hAR) {
 		gameview.width = w;
 		gameview.height = w * dimY/dimX;
@@ -36,7 +36,7 @@ function render() {
 	ctx.fillStyle = "#FF0000";
 	ctx.fillRect(0, 0, 150, 75);
 	var aLabel = new Label(0, 1, "Hello World");
-	aLabel.renderComponent(ctx);
+	aLabel.render(ctx);
 }
 render();
 

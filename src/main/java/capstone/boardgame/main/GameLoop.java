@@ -21,6 +21,13 @@ public class GameLoop extends AbsGameLoop {
         super(width, height);
     }
 
+    public MouseEvent scaleMouseEvent(MouseEvent e) {
+        float scaleX = (float)getWidth() / width;
+        float scaleY = (float)getHeight() / height;
+        int x = (int)(e.getX() / scaleX);
+        int y = (int)(e.getY() / scaleY);
+        return new MouseEvent(GameLoop.this, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger(), e.getButton());
+    }
     @Override
     public void init() {
         assets.init();
@@ -32,33 +39,33 @@ public class GameLoop extends AbsGameLoop {
 
         float scaleX = (float)getWidth() / width;
         float scaleY = (float)getHeight() / height;
-        float scale = scaleX > scaleY ? scaleY : scaleX;
+        final float scale = scaleX > scaleY ? scaleY : scaleX;
         Log.d(tag, getParent().getWidth() + " " + getParent().getHeight() + " " + (scaleX) + " " + (scaleY) + " " + scale);
         scale(scaleX, scaleY);
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                gsm.mouseClicked(scaleMouseEvent(e));
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gsm.mousePressed(scaleMouseEvent(e));
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                WebSocketServer.sendMessage(0, "Hello World");
+                gsm.mouseReleased(scaleMouseEvent(e));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
+                gsm.mouseEntered(scaleMouseEvent(e));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
+                gsm.mouseExited(scaleMouseEvent(e));
             }
         });
     }

@@ -19,7 +19,6 @@ public class Token extends BGDrawable {
     //Temporary code
     @Override
     public void renderComponent(Graphics2D g) {
-        g.setColor(color);
         g.fillOval(x, y, width, height);
     }
 }

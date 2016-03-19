@@ -1,6 +1,7 @@
 package capstone.boardgame.gamestate.ingame;
 
 import capstone.boardgame.GUI.Elements.*;
+import capstone.boardgame.GUI.Elements.Button;
 import capstone.boardgame.GUI.Elements.Label;
 import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.GUI.LoadImageFrom;
@@ -8,9 +9,12 @@ import capstone.boardgame.GUI.SpriteSheet;
 import capstone.boardgame.gamedata.GameObject.Player;
 import capstone.boardgame.gamestate.GameState;
 import capstone.boardgame.gamestate.GameStateManager;
+import capstone.boardgame.main.Log;
 import capstone.boardgame.main.Main;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Kyle on 3/1/2016.
@@ -51,11 +55,43 @@ public class LevelLoader extends GameState {
 
         label = new Label(200, 200, "Hello World");
         label.setColor(Color.gray);
+
+        Button btn = new Button(0, 500, 100, 30, "Testing");
+        btn.setColor(Color.green);
+        btn.setMouseListener(new MouseListener() {
+            private static final String tag = "MouseListener";
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Log.d(tag, "Clicked");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Log.d(tag, "Pressed");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                Log.d(tag, "Released");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Log.d(tag, "Entered");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                Log.d(tag, "Exited");
+            }
+        });
+
         gui.add(board);
         //gui.add(tile);
         gui.add(dice);
         gui.add(player);
         gui.add(label);
+        gui.add(btn);
         gui.add(tileManager);
     }
 
@@ -67,15 +103,30 @@ public class LevelLoader extends GameState {
     @Override
     public void render(Graphics2D g) {
         gui.render(g);
-        /*
-        //g.drawString("Hello World", 200, 200);
+    }
 
-        label.render(g);
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        gui.mouseClicked(e);
+    }
 
-        board.render(g);
-        //tile.render(g);
-        dice.render(g);
-        tileManager.render(g);
-        player.render(g);*/
+    @Override
+    public void mousePressed(MouseEvent e) {
+        gui.mousePressed(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        gui.mouseReleased(e);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        gui.mouseEntered(e);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        gui.mouseExited(e);
     }
 }

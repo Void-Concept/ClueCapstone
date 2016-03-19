@@ -1,11 +1,12 @@
 package capstone.boardgame.gamestate;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Kyle on 3/1/2016.
  */
-public abstract class GameState {
+public abstract class GameState implements MouseListener {
     private static final String tag = "GameState";
     GameStateManager gsm;
 

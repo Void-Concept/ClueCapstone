@@ -87,6 +87,8 @@ public abstract class BGDrawable {
     public abstract void tick(double deltaTime);
     public void render(Graphics2D g) {
         if (visible) {
+            g.setColor(color);
+            g.setFont(font);
             renderComponent(g);
         }
     }
