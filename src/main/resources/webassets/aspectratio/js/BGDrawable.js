@@ -15,12 +15,20 @@ function BGDrawable() {
 	
 	this.visible = true;
 	
+	this.setFontSize = function(size) {
+		this.fontSize = size;
+	}
+	
 	this.render = function(ctx) {
+		//console.log("Called component render");
 		if (this.visible) {
+			ctx.fillStyle=this.color;
+			ctx.font = this.fontSize + "px " + this.fontFamily;
 			this.renderComponent(ctx);
 		}
 	}
 	this.renderComponent = function(ctx) {}
+	this.clickEvent = function(event) {}
 }
 BGDrawable.defaultFontFamily = "Arial";
 BGDrawable.defaultFontSize = 30;
