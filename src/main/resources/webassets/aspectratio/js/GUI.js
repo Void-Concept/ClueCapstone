@@ -25,4 +25,7 @@ function GUI() {
 		if (typeof element != 'undefined')
 			element.clickEvent(event);
 	}
+	this.clear = function() {
+		this.elements = [];
+	}
 }

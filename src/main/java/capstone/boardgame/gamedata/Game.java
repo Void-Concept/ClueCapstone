@@ -1,5 +1,7 @@
 package capstone.boardgame.gamedata;
 
+import capstone.boardgame.main.Log;
+
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -26,11 +28,13 @@ public class Game {
     public static void loadAssets() {
         //if instance is initialized, clear it
         if (instance != null) {
+            Log.d(tag, "Setting game instance to null");
             instance.assets.clear();
             instance = null;
         }
         //regenerate through constructor
         getInstance();
+        Log.d(tag, "Reloaded assets");
     }
     //game rules
     //player rules
@@ -60,6 +64,7 @@ public class Game {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
         } catch (NullPointerException npe) {
             npe.printStackTrace();

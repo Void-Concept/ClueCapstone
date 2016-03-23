@@ -41,9 +41,13 @@ function clickEvent(event) {
 	scaledEvent = scaleEvent(event);
 	gui.clickEvent(scaledEvent);
 }
-document.getElementById("gameview").addEventListener("click", clickEvent);
 
-function init() {
+function loadGame() {
+	gui.clear();
+	
+	var gameview = document.getElementById("gameview");
+	gameview.style.background = "#FFA500"
+	
 	gui.addComponent(new Label(220, 10, "Clue"));
 	
 	var suspects = ["Mr. Green", "Colonel Mustard", "Ms. Peacock", "Prof. Plum", "Ms. Scarlet", "Ms. White"];
@@ -70,10 +74,22 @@ function init() {
 		gui.addComponent(aLabel);
 	}
 	
+	var btn = new Button(290, 400, 90, 90, "^");
+	btn.label = "up arrow";
+	gui.addComponent(btn);
+	var btn = new Button(380, 490, 90, 90, ">");
+	btn.label = "right arrow";
+	gui.addComponent(btn);
+	var btn = new Button(200, 490, 90, 90, "<");
+	btn.label = "left arrow";
+	gui.addComponent(btn);
+	var btn = new Button(290, 580, 90, 90, "v");
+	btn.label = "down arrow";
+	gui.addComponent(btn);
+	
 	render();
 }
 
-window.setInterval(render, 1000);
 function render() {
 	
 	var w = window.innerWidth;
@@ -100,8 +116,27 @@ function render() {
 		gameview.style.left = "0px";
 		gameview.style.top = "0px";
 	}
+	
 	//console.log(gameview.width + " " + gameview.height + " " + gameview.style.left + " " + gameview.style.top + " " + gameview.width/gameview.height)
 	var ctx = gameview.getContext("2d");
 	ctx.scale(gameview.width/dimX, gameview.height/dimY);
 	gui.renderComponent(ctx);
 }
+
+window.setInterval(render, 1000);
+document.getElementById("gameview").addEventListener("click", clickEvent);
+
+var btn = new Button(5, 5, 150, 50, "Start Game");
+
+btn.clickListener = function(event) {
+	loadGame();
+};
+gui.addComponent(btn);
+
+
+socketListener = function(text) {
+	console.log(text);
+}
+openSocket();
+
+render();

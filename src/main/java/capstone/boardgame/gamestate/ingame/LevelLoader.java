@@ -6,6 +6,7 @@ import capstone.boardgame.GUI.Elements.Label;
 import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.GUI.LoadImageFrom;
 import capstone.boardgame.GUI.SpriteSheet;
+import capstone.boardgame.gamedata.Game;
 import capstone.boardgame.gamedata.GameObject.Player;
 import capstone.boardgame.gamestate.GameState;
 import capstone.boardgame.gamestate.GameStateManager;
@@ -73,6 +74,8 @@ public class LevelLoader extends GameState {
             @Override
             public void mouseReleased(MouseEvent e) {
                 Log.d(tag, "Released");
+                Log.d(tag, "Reloading assets");
+                Game.loadAssets();
             }
 
             @Override

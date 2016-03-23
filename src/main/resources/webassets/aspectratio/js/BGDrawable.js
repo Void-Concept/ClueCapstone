@@ -1,7 +1,7 @@
 BGDrawable.currLabel = 1;
 function BGDrawable() {
 	BGDrawable.currLabel += 1;
-	BGDrawable.label = "Drawable"+BGDrawable.currLabel;
+	this.label = "Drawable"+BGDrawable.currLabel;
 	
 	this.x = 0;
 	this.y = 0;
