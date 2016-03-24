@@ -1,4 +1,3 @@
-
 function RadioButton(x, y, width, height, lineWidth = 5) {
 	this.x = x;
 	this.y = y;

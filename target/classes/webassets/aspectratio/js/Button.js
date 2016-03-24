@@ -1,4 +1,3 @@
-
 function Button(x, y, width, height, text) {
 	this.x = x;
 	this.y = y;

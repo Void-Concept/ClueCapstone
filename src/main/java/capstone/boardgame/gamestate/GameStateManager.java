@@ -1,6 +1,6 @@
 package capstone.boardgame.gamestate;
 
-import capstone.boardgame.gamestate.ingame.LevelLoader;
+import capstone.boardgame.gamestate.ingame.GameController;
 import capstone.boardgame.main.Log;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ public class GameStateManager implements MouseListener {
 
     public GameStateManager() {
         states = new Stack<>();
-        states.push(new LevelLoader(this));
+        states.push(new GameController(this));
     }
 
     public void tick(double deltaTime) {

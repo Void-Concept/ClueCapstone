@@ -9,6 +9,7 @@ function BGDrawable() {
 	this.height = 0;
 	
 	this.color = BGDrawable.defaultColor;
+	this.backgroundColor = BGDrawable.defaultBackgroundColor;
 	
 	this.fontFamily = BGDrawable.defaultFontFamily;
 	this.fontSize = BGDrawable.defaultFontSize;
@@ -19,10 +20,22 @@ function BGDrawable() {
 		this.fontSize = size;
 	}
 	
+	this.setBackgroundColor = function(color) {
+		this.background = new Rectangle(this.x, this.y, this.width, this.height, color);
+	}
+	
 	this.render = function(ctx) {
 		//console.log("Called component render");
 		if (this.visible) {
-			ctx.fillStyle=this.color;
+			//draw background
+			ctx.fillStyle = this.backgroundColor;
+			ctx.fillRect(this.x, this.y, this.width, this.height);
+			ctx.stroke();
+			ctx.fillStyle = 'rgba(0,0,0,1)';
+			
+			//draw component
+			ctx.strokeStyle=this.color;
+			ctx.fillStyle = this.color;
 			ctx.font = this.fontSize + "px " + this.fontFamily;
 			this.renderComponent(ctx);
 		}
@@ -33,3 +46,4 @@ function BGDrawable() {
 BGDrawable.defaultFontFamily = "Arial";
 BGDrawable.defaultFontSize = 30;
 BGDrawable.defaultColor = "#000000";
+BGDrawable.defaultBackgroundColor = 'transparent';

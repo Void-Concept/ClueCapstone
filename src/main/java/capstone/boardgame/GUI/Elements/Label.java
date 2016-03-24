@@ -18,6 +18,10 @@ public class Label extends BGDrawable {
 
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     @Override
     protected void renderComponent(Graphics2D g) {
         int fontSize = getFont().getSize();

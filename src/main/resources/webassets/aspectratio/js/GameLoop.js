@@ -1,6 +1,8 @@
 var dimX = 480;
 var dimY = 854;
 var gui = new GUI();
+var connStatus = new Rectangle(460, 2, 10, 10, "#FF0000");
+
 var device = {
 	is_android: function() {
 		return navigator.userAgent.match(/Android/i);
@@ -91,7 +93,6 @@ function loadGame() {
 }
 
 function render() {
-	
 	var w = window.innerWidth;
 	var h = window.innerHeight;
 	var gameview = document.getElementById("gameview");
@@ -121,6 +122,8 @@ function render() {
 	var ctx = gameview.getContext("2d");
 	ctx.scale(gameview.width/dimX, gameview.height/dimY);
 	gui.renderComponent(ctx);
+	
+	connStatus.render(ctx);
 }
 
 window.setInterval(render, 1000);

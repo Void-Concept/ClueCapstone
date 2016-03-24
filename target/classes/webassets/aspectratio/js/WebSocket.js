@@ -7,22 +7,33 @@ function openSocket() {
 		writeResponse("WebSocket is already opened.");
 		return;
 	}
+	if (window.location.hostname == "") {
+		console.log("Running in local debug mode; no connection");
+		return;
+	}
 	// Create a new instance of the websocket
-	webSocket = new WebSocket("ws://" + window.location.hostname + ":8080/echo");
+	webSocket = new WebSocket("ws://" + window.location.hostname + ":8080/boardgame");
 
 	/**
 	* Binds functions to the listeners for the websocket.
 	*/
 	webSocket.onopen = function(event){
-		if(event.data === undefined)
+		if (event.data === undefined)
 			return;
 		writeResponse(event.data);
+		console.log("Opened");
+		connStatus.color = "#00FF00";
+		render();
 	};
 	webSocket.onmessage = function(event){
 		writeResponse(event.data);
+		connStatus.color = "#00FF00";
+		render();
 	};
 	webSocket.onclose = function(event){
 		writeResponse("Connection closed");
+		connStatus.color = "#FF0000";
+		render();
 	};
 }
 

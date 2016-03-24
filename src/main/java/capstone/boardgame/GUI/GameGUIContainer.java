@@ -7,6 +7,7 @@ import capstone.boardgame.main.Log;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 
 /**
@@ -23,6 +24,12 @@ public class GameGUIContainer extends BGContainer implements MouseListener {
         g.setFont(BGDrawable.getDefaultfont());
         g.setColor(BGDrawable.getDefaultColor());
         super.renderComponent(g);
+    }
+
+    public void addAll(ArrayList<BGDrawable> drawables) {
+        for (BGDrawable drawable : drawables) {
+            add(drawable);
+        }
     }
 
     private MouseListener checkForButton(MouseEvent e) {
