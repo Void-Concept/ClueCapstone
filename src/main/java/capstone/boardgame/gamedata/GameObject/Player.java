@@ -1,6 +1,6 @@
 package capstone.boardgame.gamedata.GameObject;
 
-import capstone.boardgame.GUI.Elements.BGDrawable;
+import capstone.boardgame.GUI.Elements.BGComponent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 /**
  * Created by Kyle on 3/8/2016.
  */
-public class Player extends BGDrawable {
+public class Player extends BGComponent {
     private static final String tag = "Player";
-    ArrayList<BGDrawable> drawables = new ArrayList<>();
+    ArrayList<BGComponent> drawables = new ArrayList<>();
     int playerNum;
 
     /*
@@ -29,7 +29,7 @@ public class Player extends BGDrawable {
         return playerNum;
     }
 
-    public void addDrawable(BGDrawable drawable) {
+    public void addDrawable(BGComponent drawable) {
         drawables.add(drawable);
     }
 
@@ -41,7 +41,7 @@ public class Player extends BGDrawable {
 
     @Override
     public void renderComponent(Graphics2D g) {
-        for (BGDrawable drawable : drawables) {
+        for (BGComponent drawable : drawables) {
             drawable.render(g);
         }
     }

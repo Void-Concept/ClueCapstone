@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * Created by Kyle on 3/18/2016.
  */
-public class Button extends BGDrawable implements MouseListener {
+public class Button extends BGComponent implements MouseListener {
     private static final String tag = "Button";
     protected String text = "";
 

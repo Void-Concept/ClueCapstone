@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Created by Kyle on 3/7/2016.
  */
-public class TileManager extends BGDrawable {
+public class TileManager extends BGComponent {
     private static final String tag = "TileManager";
     ArrayList<Tile> tiles = new ArrayList<Tile>();
 

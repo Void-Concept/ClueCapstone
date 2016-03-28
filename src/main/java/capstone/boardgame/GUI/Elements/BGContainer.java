@@ -7,17 +7,17 @@ import java.util.HashMap;
 /**
  * Created by Kyle on 3/14/2016.
  */
-public abstract class BGContainer extends BGDrawable {
+public abstract class BGContainer extends BGComponent {
     public BGContainer() { super(); }
     public BGContainer(int x, int y, int width, int height) { super(x, y, width, height); }
 
-    protected ArrayList<BGDrawable> drawables = new ArrayList<BGDrawable>();
-    public void add(BGDrawable drawable) {
+    protected ArrayList<BGComponent> drawables = new ArrayList<BGComponent>();
+    public void add(BGComponent drawable) {
         drawables.add(drawable);
     }
-    public BGDrawable getViewByID(String id) {
-        BGDrawable found = null;
-        for (BGDrawable drawable : drawables) {
+    public BGComponent getViewByID(String id) {
+        BGComponent found = null;
+        for (BGComponent drawable : drawables) {
             //check this drawable
             if (drawable.getId().equals(id)) {
                 found = drawable;
@@ -37,7 +37,7 @@ public abstract class BGContainer extends BGDrawable {
 
     @Override
     public void renderComponent(Graphics2D g) {
-        for (BGDrawable drawable : drawables) {
+        for (BGComponent drawable : drawables) {
             drawable.render(g);
         }
     }

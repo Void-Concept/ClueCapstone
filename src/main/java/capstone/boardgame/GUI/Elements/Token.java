@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Kyle on 3/8/2016.
  */
-public class Token extends BGDrawable {
+public class Token extends BGComponent {
     private static final String tag = "Token";
     public Token(int x, int y, int width, int height) {
         super(x, y, width, height);

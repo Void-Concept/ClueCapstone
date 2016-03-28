@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Kyle on 3/7/2016.
  */
-public class Tile extends BGDrawable {
+public class Tile extends BGComponent {
     private static final String tag = "Tile";
     private BufferedImage img;
 

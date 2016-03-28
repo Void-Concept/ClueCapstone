@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Kyle on 3/8/2016.
  */
-public class Label extends BGDrawable {
+public class Label extends BGComponent {
     private static final String tag = "Label";
     protected String text;
     public Label(int x, int y, String text) {

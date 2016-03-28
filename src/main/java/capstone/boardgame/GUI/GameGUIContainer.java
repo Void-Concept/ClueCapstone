@@ -21,13 +21,13 @@ public class GameGUIContainer extends BGContainer implements MouseListener {
     }
     @Override
     public void renderComponent(Graphics2D g) {
-        g.setFont(BGDrawable.getDefaultfont());
-        g.setColor(BGDrawable.getDefaultColor());
+        g.setFont(BGComponent.getDefaultfont());
+        g.setColor(BGComponent.getDefaultColor());
         super.renderComponent(g);
     }
 
-    public void addAll(ArrayList<BGDrawable> drawables) {
-        for (BGDrawable drawable : drawables) {
+    public void addAll(ArrayList<BGComponent> drawables) {
+        for (BGComponent drawable : drawables) {
             add(drawable);
         }
     }
@@ -35,7 +35,7 @@ public class GameGUIContainer extends BGContainer implements MouseListener {
     private MouseListener checkForButton(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        for (BGDrawable drawable : drawables) {
+        for (BGComponent drawable : drawables) {
             if (drawable instanceof MouseListener) {
                 if ((x > drawable.getX() && x < drawable.getX() + drawable.getWidth()) &&
                         (y > drawable.getY() && y < drawable.getY() + drawable.getHeight())) {

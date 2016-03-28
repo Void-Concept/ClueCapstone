@@ -17,9 +17,9 @@ import java.util.ArrayList;
  * Created by Kyle on 3/23/2016.
  */
 public class LevelLoader {
-    public static ArrayList<BGDrawable> loadLevel(String path) {
+    public static ArrayList<BGComponent> loadLevel(String path) {
         //ignore path for now
-        ArrayList<BGDrawable> drawables = new ArrayList<>();
+        ArrayList<BGComponent> drawables = new ArrayList<>();
 
 
         Board board = new Board(320, 40, 640, 640, "ClueBoard.csv");

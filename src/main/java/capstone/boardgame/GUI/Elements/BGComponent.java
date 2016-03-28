@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Kyle on 3/6/2016.
  */
-public abstract class BGDrawable {
+public abstract class BGComponent {
     protected String bgTag = "";
     protected String label = "";
     private static int currLabel = 1;
@@ -36,13 +36,13 @@ public abstract class BGDrawable {
         return defaultColor;
     }
 
-    public BGDrawable() {
+    public BGComponent() {
         font = defaultfont;
         color = defaultColor;
         label = "Drawable"+currLabel;
         currLabel++;
     }
-    public BGDrawable(int x, int y, int width, int height) {
+    public BGComponent(int x, int y, int width, int height) {
         this();
         this.x = x; this.y = y;
         this.width = width; this.height = height;

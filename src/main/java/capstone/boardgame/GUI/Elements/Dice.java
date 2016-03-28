@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by Kyle on 3/6/2016.
  */
-public class Dice extends BGDrawable {
+public class Dice extends BGComponent {
     private static final String tag = "Dice";
     private int maxRoll = 6;
     private int currRoll = 1;

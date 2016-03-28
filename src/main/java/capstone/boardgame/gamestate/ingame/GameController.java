@@ -35,7 +35,7 @@ public class GameController extends GameState implements SocketListener {
 
     @Override
     public void init() {
-        BGDrawable.setDefaultColor(Color.cyan);
+        BGComponent.setDefaultColor(Color.cyan);
 
         gui.addAll(LevelLoader.loadLevel(""));
 
