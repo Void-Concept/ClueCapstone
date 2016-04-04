@@ -1,8 +1,6 @@
 package capstone.boardgame.GUI;
 
-import capstone.boardgame.GUI.Elements.*;
-import capstone.boardgame.GUI.Elements.Button;
-import capstone.boardgame.main.Log;
+import capstone.boardgame.GUI.Component.BGComponent;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

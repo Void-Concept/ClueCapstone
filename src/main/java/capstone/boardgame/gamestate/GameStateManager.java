@@ -3,6 +3,7 @@ package capstone.boardgame.gamestate;
 import capstone.boardgame.gamestate.ingame.GameController;
 import capstone.boardgame.main.Log;
 
+import javax.websocket.Session;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,10 +15,12 @@ import java.util.Stack;
 public class GameStateManager implements MouseListener {
     private static final String tag = "GameStateManager";
     public static Stack<GameState> states;
+    protected SessionManager sessions;
 
     public GameStateManager() {
         states = new Stack<>();
         states.push(new GameController(this));
+        sessions = new SessionManager();
     }
 
     public void tick(double deltaTime) {

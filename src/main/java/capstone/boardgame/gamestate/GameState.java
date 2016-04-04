@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
  */
 public abstract class GameState implements MouseListener {
     private static final String tag = "GameState";
-    GameStateManager gsm;
+    protected GameStateManager gsm;
 
     public GameState(GameStateManager gsm) {
         this.gsm = gsm;

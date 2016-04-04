@@ -1,6 +1,6 @@
 package capstone.boardgame.gamedata.GameObject;
 
-import capstone.boardgame.GUI.Elements.BGComponent;
+import capstone.boardgame.GUI.Component.BGComponent;
 
 import java.awt.*;
 import java.util.ArrayList;

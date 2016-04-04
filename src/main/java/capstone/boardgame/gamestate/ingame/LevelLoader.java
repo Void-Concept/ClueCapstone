@@ -1,8 +1,9 @@
 package capstone.boardgame.gamestate.ingame;
 
-import capstone.boardgame.GUI.Elements.*;
-import capstone.boardgame.GUI.Elements.Button;
-import capstone.boardgame.GUI.Elements.Label;
+import capstone.boardgame.GUI.Component.BGComponent;
+import capstone.boardgame.GUI.Component.Board;
+import capstone.boardgame.GUI.Component.Button;
+import capstone.boardgame.GUI.Component.Label;
 import capstone.boardgame.GUI.LoadImageFrom;
 import capstone.boardgame.GUI.SpriteSheet;
 import capstone.boardgame.main.Log;
