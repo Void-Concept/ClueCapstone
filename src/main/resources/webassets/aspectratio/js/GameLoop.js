@@ -1,6 +1,7 @@
 var dimX = 480;
 var dimY = 854;
 var gui = new GUI();
+var packetHandler = new PacketHandler();
 var connStatus = new Rectangle(460, 2, 10, 10, "#FF0000");
 
 var device = {
@@ -129,16 +130,15 @@ function render() {
 window.setInterval(render, 1000);
 document.getElementById("gameview").addEventListener("click", clickEvent);
 
-var btn = new Button(5, 5, 150, 50, "Start Game");
+var btn = new Button(150, 550, 160, 50, "Start Game");
 
 btn.clickListener = function(event) {
-	loadGame();
+	//loadGame();
 };
 gui.addComponent(btn);
 
-
 socketListener = function(text) {
-	console.log(text);
+	packetHandler.handlePacket(text);
 }
 openSocket();
 

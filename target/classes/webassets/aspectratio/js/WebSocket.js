@@ -40,15 +40,15 @@ function openSocket() {
 /**
 * Sends the value of the text input to the server
 */
-function send(text){
-	console.log("Sending: " + text);
-	webSocket.send(text);
+function send(packet) {
+	console.log("Sending: " + packet);
+	webSocket.send(packet);
 }
 
-function closeSocket(){
+function closeSocket() {
 	webSocket.close();
 }
 
-function writeResponse(text){
+function writeResponse(text) {
 	socketListener(text);
 }

@@ -43,7 +43,10 @@ function Button(x, y, width, height, text) {
 			this.clickListener(event);
 		}
 		
-		send("{Button:\"" + this.label + "\"\}");
+		var packet = new Packet();
+		packet.command = "onClick";
+		packet.addParameter("view", this.label);
+		send(packet.getJson());
 	}
 }
 Button.prototype = new BGDrawable;

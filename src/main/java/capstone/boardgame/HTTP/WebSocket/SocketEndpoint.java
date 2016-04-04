@@ -42,6 +42,7 @@ public class SocketEndpoint {
         //session.getBasicRemote().sendText(message + " (from your server)");
         if (listener != null) {
             listener.onMessage(session, message);
+            Packet.parseJson(message);
         }
     }
 
