@@ -26,15 +26,15 @@ public class Packet {
 
     public String getJson() {
         String json = "";
-        json = json.concat("{Command:\""+ this.command +"\",");
-        json = json.concat("parameters:[");
+        json = json.concat("{\"Command\":\""+ this.command +"\",");
+        json = json.concat("\"Parameters\":[");
         for (int i = 0; i < this.parameters.size(); i++) {
             json = json.concat("{" + this.parameters.get(i)[0] + ":\"" + this.parameters.get(i)[1] + "\"}");
             if (i != this.parameters.size() - 1) {
                 json = json.concat(",");
             }
         }
-        json = json.concat("]");
+        json = json.concat("]}");
         return json;
     }
 
@@ -43,10 +43,18 @@ public class Packet {
         Packet packet = new Packet();
         packet.setCommand((String)obj.get("Command"));
 
-        JSONArray params = obj.getJSONArray("parameters");
+        JSONArray params = obj.getJSONArray("Parameters");
         for (int i = 0; i < params.length(); i++) {
-            
+
         }
+
+        return packet;
+    }
+
+    public static Packet createOpenPacket() {
+        Packet packet = new Packet();
+
+        packet.setCommand("onOpen");
 
         return packet;
     }

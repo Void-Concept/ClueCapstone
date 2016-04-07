@@ -21,6 +21,7 @@ import java.io.IOException;
 public class GameController extends GameState implements SocketListener {
     private static final String tag = "GameController";
     GameGUIContainer gui = new GameGUIContainer();
+    GamePacketHandler handler = new GamePacketHandler();
 
     public GameController(GameStateManager gsm) {
         super(gsm);
@@ -31,6 +32,8 @@ public class GameController extends GameState implements SocketListener {
         BGComponent.setDefaultColor(Color.cyan);
 
         gui.addAll(LevelLoader.loadLevel(""));
+
+        SocketEndpoint.setPacketHandler(handler);
 
         SocketEndpoint.setListener(this);
     }

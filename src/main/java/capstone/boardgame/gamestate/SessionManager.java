@@ -7,25 +7,41 @@ import java.util.ArrayList;
  * Created by Kyle on 3/28/2016.
  */
 public class SessionManager {
-    private ArrayList<Session> players = new ArrayList<>();
-    private ArrayList<Session> other = new ArrayList<>();
+    private static ArrayList<Session> players = new ArrayList<>();
+    private static ArrayList<Session> sessions = new ArrayList<>();
 
-    public void addSession(Session session) {
-        other.add(session);
+    public static void addSession(Session session) {
+        sessions.add(session);
     }
-    public boolean removeSession(Session session) {
+    public static boolean removeSession(Session session) {
         try {
-            other.remove(session);
+            sessions.remove(session);
         } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    public void promoteSession(Session session) {
-        removeSession(session);
+    public static void addPlayer(Session session) {
         players.add(session);
+    }
+    public static boolean removePlayer(Session session) {
+        try {
+            players.remove(session);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 
+    public static void promoteSession(Session session) {
+        removeSession(session);
+        addPlayer(session);
+    }
+
+    public static void demoteSession(Session session) {
+        removePlayer(session);
+        addSession(session);
+    }
 }

@@ -17,21 +17,22 @@ function openSocket() {
 	/**
 	* Binds functions to the listeners for the websocket.
 	*/
-	webSocket.onopen = function(event){
+	webSocket.onopen = function(event) {
 		if (event.data === undefined)
 			return;
-		writeResponse(event.data);
+		//writeResponse(event.data);
 		console.log("Opened");
 		connStatus.color = "#00FF00";
 		render();
 	};
-	webSocket.onmessage = function(event){
-		writeResponse(event.data);
+	webSocket.onmessage = function(event) {
+		//writeResponse(event.data);
+		socketListener(event.data);
 		connStatus.color = "#00FF00";
 		render();
 	};
-	webSocket.onclose = function(event){
-		writeResponse("Connection closed");
+	webSocket.onclose = function(event) {
+		//writeResponse("Connection closed");
 		connStatus.color = "#FF0000";
 		render();
 	};
