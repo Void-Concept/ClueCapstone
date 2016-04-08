@@ -1,5 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 
 /**
@@ -20,5 +22,11 @@ public class Token extends BGComponent {
     @Override
     public void renderComponent(Graphics2D g) {
         g.fillOval(x, y, width, height);
+    }
+
+    @Override
+    protected JSONObject convertJson() {
+        JSONObject obj = new JSONObject();
+        return obj;
     }
 }

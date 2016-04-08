@@ -1,5 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 
 /**
@@ -28,5 +30,14 @@ public class Label extends BGComponent {
         int yOff = (int)(fontSize*.75);
 
         g.drawString(text, x, y + yOff);
+    }
+
+    @Override
+    protected JSONObject convertJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("type","label");
+
+        obj.put("text", text);
+        return obj;
     }
 }

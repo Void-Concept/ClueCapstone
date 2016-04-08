@@ -1,5 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 
 /**
@@ -93,4 +95,23 @@ public abstract class BGComponent {
         }
     }
     protected abstract void renderComponent(Graphics2D g);
+
+    public JSONObject toJson() {
+        JSONObject obj = convertJson();
+        if (obj == null) {
+            obj = new JSONObject();
+        }
+        obj.put("x", x);
+        obj.put("y", y);
+        obj.put("width", width);
+        obj.put("height", height);
+        obj.put("label", label);
+        Font font = getFont();
+        obj.put("fontFamily", font.getFamily());
+        obj.put("fontSize", font.getSize());
+
+        return obj;
+    }
+    protected abstract JSONObject convertJson();
 }
+

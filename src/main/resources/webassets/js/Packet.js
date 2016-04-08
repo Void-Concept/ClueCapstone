@@ -10,7 +10,7 @@ function Packet() {
 		var json = "";
 		json = json.concat("{\"Command\":\""+ this.command +"\",");
 		json = json.concat("\"Parameters\":[");
-		for (i = 0; i < this.parameters.length; i++) {
+		for (var i = 0; i < this.parameters.length; i++) {
 			json = json.concat("{\"" + this.parameters[i][0] + "\":\"" + this.parameters[i][1] + "\"}");
 			if (i != this.parameters.length - 1) {
 				json = json.concat(",");

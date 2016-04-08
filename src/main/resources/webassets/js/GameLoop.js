@@ -1,6 +1,6 @@
 var dimX = 480;
 var dimY = 854;
-var gui = new GUI();
+var gui = new BGContainer();
 var packetHandler = new PacketHandler();
 var connStatus = new Rectangle(460, 2, 10, 10, "#FF0000");
 
@@ -56,21 +56,21 @@ function loadGame() {
 	var suspects = ["Mr. Green", "Colonel Mustard", "Ms. Peacock", "Prof. Plum", "Ms. Scarlet", "Ms. White"];
 	var weapons = ["Candlestick", "Knife", "Lead Pipe", "Pistol", "Rope", "Wrench"];
 	var places = ["Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study"];
-	for (i = 0; i < suspects.length; i++) {
+	for (var i = 0; i < suspects.length; i++) {
 		gui.addComponent(new RadioButton(10, 80 + 30*i, 30, 30, 2));
 		var aLabel = new Label(50, 85 + 30*i, suspects[i])
 		aLabel.setFontSize(20);
 		gui.addComponent(aLabel);
 	}
 	
-	for (i = 0; i < weapons.length; i++) {
+	for (var i = 0; i < weapons.length; i++) {
 		gui.addComponent(new RadioButton(10, 310 + 30*i, 30, 30, 2));
 		var aLabel = new Label(50, 315 + 30*i, weapons[i])
 		aLabel.setFontSize(20);
 		gui.addComponent(aLabel);
 	}
 	
-	for (i = 0; i < places.length; i++) {
+	for (var i = 0; i < places.length; i++) {
 		gui.addComponent(new RadioButton(10, 540 + 30*i, 30, 30, 2));
 		var aLabel = new Label(50, 545 + 30*i, places[i])
 		aLabel.setFontSize(20);
@@ -100,7 +100,7 @@ function render() {
 	var wAR = w / dimX;
 	var hAR = h / dimY;
 
-	if (Math.abs((wAR - hAR)/((wAR + hAR) / 2)) > 0.22) {
+	if (Math.abs((wAR - hAR)/((wAR + hAR) / 2)) > 0.05) {
 		if (wAR < hAR) {
 			gameview.width = w;
 			gameview.height = w * dimY/dimX;

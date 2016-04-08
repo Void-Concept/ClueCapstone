@@ -1,5 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
@@ -40,5 +42,13 @@ public class Dice extends BGComponent {
         Rectangle2D r2d = fm.getStringBounds(""+currRoll, g);
 
         g.drawString(""+currRoll, x + (int)(width/2 - r2d.getWidth()/2), y + yOff);
+    }
+
+    @Override
+    protected JSONObject convertJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("maxRoll", maxRoll);
+
+        return obj;
     }
 }

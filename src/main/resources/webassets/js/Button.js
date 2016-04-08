@@ -22,9 +22,25 @@ function Button(x, y, width, height, text) {
 			ctx.fillStyle = this.color;
 		}
 		
-		var metrics = ctx.measureText(text);
+		//console.log("Color: "+ this.color + " Background: " + this.backgroundColor + " Font: " + ctx.font + " strokeStyle: " + ctx.strokeStyle + " fillStyle: ");
+		
+		/*
+					//draw background
+			ctx.fillStyle = this.backgroundColor;
+			ctx.fillRect(this.x, this.y, this.width, this.height);
+			ctx.stroke();
+			ctx.fillStyle = 'rgba(0,0,0,1)';
+			
+			//draw component
+			ctx.strokeStyle=this.color;
+			ctx.fillStyle = this.color;
+			ctx.font = this.fontSize + "px " + this.fontFamily;
+			this.renderComponent(ctx);
+		*/
+		
+		var metrics = ctx.measureText(this.text);
 		var offsetX = (this.width - metrics.width)/2;
-		var offsetY = (this.fontSize*.75 + height)/2;
+		var offsetY = (this.fontSize*.75 + this.height)/2;
 		ctx.fillText(this.text, this.x + offsetX, this.y + offsetY);
 	}
 	var flashOff = function() {

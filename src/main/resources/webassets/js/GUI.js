@@ -4,12 +4,12 @@ function GUI() {
 		this.elements.push(drawable);
 	}
 	this.renderComponent = function(ctx) {
-		for (i = 0; i < this.elements.length; i++) {
+		for (var i = 0; i < this.elements.length; i++) {
 			this.elements[i].render(ctx);
 		}
 	}
 	this.clickElement = function(event) {
-		for (i = 0; i < this.elements.length; i++) {
+		for (var i = 0; i < this.elements.length; i++) {
 			var x = this.elements[i].x,
 				y = this.elements[i].y
 				width = this.elements[i].width

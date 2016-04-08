@@ -11,10 +11,13 @@ import java.util.ArrayList;
  */
 public class Packet {
     private String command = "";
-    private ArrayList<String[]> parameters = new ArrayList<>();
+    private ArrayList<String> parameters = new ArrayList<>();
 
     public void addParameters(String param, String value) {
-        parameters.add(new String[]{param, value});
+        parameters.add("{\"" + param + "\":\"" + value + "\"}");
+    }
+    public void addParameters(JSONObject json) {
+        parameters.add(json.toString());
     }
 
     public void setCommand(String command) {
@@ -29,7 +32,7 @@ public class Packet {
         json = json.concat("{\"Command\":\""+ this.command +"\",");
         json = json.concat("\"Parameters\":[");
         for (int i = 0; i < this.parameters.size(); i++) {
-            json = json.concat("{" + this.parameters.get(i)[0] + ":\"" + this.parameters.get(i)[1] + "\"}");
+            json = json.concat(this.parameters.get(i));
             if (i != this.parameters.size() - 1) {
                 json = json.concat(",");
             }

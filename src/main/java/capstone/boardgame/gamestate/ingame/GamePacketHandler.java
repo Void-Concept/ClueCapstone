@@ -19,6 +19,9 @@ public class GamePacketHandler implements PacketHandler {
                 case "onClick":
                     Log.d(tag, "TODO: onClick");
                     break;
+                case "radioToggle":
+                    Log.d(tag, "TODO: radioToggle");
+                    break;
                 case "refresh":
                     Log.d(tag, "TODO: refresh");
                     break;

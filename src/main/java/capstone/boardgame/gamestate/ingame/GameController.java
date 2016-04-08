@@ -9,6 +9,7 @@ import capstone.boardgame.HTTP.WebSocket.SocketListener;
 import capstone.boardgame.gamestate.GameState;
 import capstone.boardgame.gamestate.GameStateManager;
 import capstone.boardgame.main.Log;
+import org.json.JSONObject;
 
 import javax.websocket.CloseReason;
 import javax.websocket.Session;
@@ -50,7 +51,13 @@ public class GameController extends GameState implements SocketListener {
         //set up packet handler
         SocketEndpoint.setPacketHandler(handler);
 
-        Log.d(tag, "TODO: tell remotes to load game");
+        for (Player player : players) {
+            try {
+                player.sendView();
+            } catch (Exception e) {
+
+            }
+        }
 
         SocketEndpoint.setListener(this);
     }
@@ -66,10 +73,10 @@ public class GameController extends GameState implements SocketListener {
                     player.setPid(session.getId());
                     player.setSession(session);
                     player.enabled = true;
+                    player.sendView();
                     break;
                 }
             }
-            Log.d(tag, "TODO: Tell new player to load game");
             ((Label)gui.getViewByID("NumPlayers")).setText("" + gsm.getPlayerCount());
 
             return true;

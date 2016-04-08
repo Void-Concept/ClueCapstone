@@ -1,5 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -26,5 +28,11 @@ public class TileManager extends BGComponent {
         for (Tile tile : tiles) {
             tile.render(g);
         }
+    }
+
+    @Override
+    protected JSONObject convertJson() {
+        JSONObject obj = new JSONObject();
+        return obj;
     }
 }

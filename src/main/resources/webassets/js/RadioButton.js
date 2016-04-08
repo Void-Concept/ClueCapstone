@@ -29,6 +29,11 @@ function RadioButton(x, y, width, height, lineWidth = 5) {
 		console.log("Button clicked");
 		console.log(this.checked);
 		render();
+		
+		var packet = new Packet();
+		packet.command = "radioToggle";
+		packet.addParameter("view", this.label);
+		send(packet.getJson());
 	}
 }
 RadioButton.prototype = new BGDrawable;

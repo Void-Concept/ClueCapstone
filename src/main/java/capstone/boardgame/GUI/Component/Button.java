@@ -1,6 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
 import capstone.boardgame.main.Log;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -35,6 +36,15 @@ public class Button extends BGComponent implements MouseListener {
         Rectangle2D r2d = fm.getStringBounds(text, g);
 
         g.drawString(text, x + (int)(width/2 - r2d.getWidth()/2), y + yOff);
+    }
+
+    @Override
+    protected JSONObject convertJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("type","button");
+        obj.put("text", text);
+
+        return obj;
     }
 
     public void setMouseListener(MouseListener listener) {

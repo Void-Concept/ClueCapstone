@@ -1,5 +1,7 @@
 package capstone.boardgame.GUI.Component;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -27,5 +29,11 @@ public class Tile extends BGComponent {
         } else {
             g.drawRect(x, y, width, height);
         }
+    }
+
+    @Override
+    protected JSONObject convertJson() {
+        JSONObject obj = new JSONObject();
+        return obj;
     }
 }
