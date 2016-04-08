@@ -8,6 +8,7 @@ import capstone.boardgame.HTTP.WebSocket.SocketEndpoint;
 import capstone.boardgame.HTTP.WebSocket.SocketListener;
 import capstone.boardgame.gamestate.GameState;
 import capstone.boardgame.gamestate.GameStateManager;
+import capstone.boardgame.gamestate.ingame.GamePacketHandler;
 
 import javax.websocket.CloseReason;
 import javax.websocket.Session;
@@ -22,22 +23,27 @@ import java.io.IOException;
 public class MainMenu extends GameState implements SocketListener {
     private static final String tag = "MainMenu";
     GameGUIContainer gui = new GameGUIContainer();
+    MenuPacketHandler handler = new MenuPacketHandler(this);
 
     public MainMenu(GameStateManager gsm) {
         super(gsm);
+    }
+
+    public void loadGame() {
+        if (gsm.getPlayerCount() > 1 && gsm.getPlayerCount() <= 6)
+            gsm.loadGame("Clue");
     }
 
     @Override
     public void init() {
         BGComponent.setDefaultColor(Color.cyan);
 
-        Button loadGame = new Button(500, 500, 200, 60, "Load Game");
+        final Button loadGame = new Button(500, 500, 200, 60, "Load Game");
         loadGame.setColor(Color.WHITE);
         loadGame.setMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (gsm.getPlayerCount() > 1 && gsm.getPlayerCount() <= 6)
-                    gsm.loadGame("Clue");
+                loadGame();
             }
 
             @Override
@@ -78,6 +84,9 @@ public class MainMenu extends GameState implements SocketListener {
         gui.add(connections);
 
         SocketEndpoint.setListener(this);
+
+        //set up packet handler
+        SocketEndpoint.setPacketHandler(handler);
     }
 
     @Override

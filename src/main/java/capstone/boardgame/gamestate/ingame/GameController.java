@@ -55,42 +55,7 @@ public class GameController extends GameState implements SocketListener {
         ArrayList<Session> sessions = gsm.getPlayers();
         int number = 0;
         for (Session session : sessions) {
-            Player player = new Player(session.getId(), session);
-            players.add(player);
-
-            Token token = null;
-            switch (number) {
-                case 0:
-                    token = new Token(10, 10, 10, 10);
-                    token.setColor(Color.magenta);
-                    break;
-                case 1:
-                    token = new Token(20, 10, 10, 10);
-                    token.setColor(Color.red);
-                    break;
-                case 2:
-                    token = new Token(30, 10, 10, 10);
-                    token.setColor(Color.yellow);
-                    break;
-                case 3:
-                    token = new Token(40, 10, 10, 10);
-                    token.setColor(Color.white);
-                    break;
-                case 4:
-                    token = new Token(50, 10, 10, 10);
-                    token.setColor(Color.green);
-                    break;
-                case 5:
-                    token = new Token(60, 10, 10, 10);
-                    token.setColor(Color.blue);
-                    break;
-
-            }
-            if (token != null) {
-                token.setId("player");
-                player.add(token);
-            }
-
+            players.add(LevelLoader.setupPlayer(number, session));
             number++;
         }
 

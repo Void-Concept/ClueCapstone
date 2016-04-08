@@ -5,12 +5,14 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Created by Kyle on 3/6/2016.
  */
 public abstract class BGComponent {
-    protected String bgTag = "";
+    protected String tag = "BGComponent";
     protected String label = "";
     private static int currLabel = 1;
 
@@ -27,6 +29,8 @@ public abstract class BGComponent {
 
     protected Font font;
     protected static Font defaultfont = new Font("Arial", Font.PLAIN, 20);
+
+    protected HashMap<String, Object> flags = new HashMap();
 
     protected boolean visible = true;
 
@@ -56,6 +60,13 @@ public abstract class BGComponent {
         this();
         this.x = x; this.y = y;
         this.width = width; this.height = height;
+    }
+
+    public void addFlag(String key, Object value) {
+        flags.put(key, value);
+    }
+    public Object getFlag(String key) {
+        return flags.get(key);
     }
 
     public void setX(int x) {

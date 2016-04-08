@@ -15,7 +15,7 @@ public class Assets {
     private BufferedImage stone_1;
 
     public void init() {
-        blocks.setSpriteSheet(LoadImageFrom.LoadImageFrom(this.getClass(), "spritesheet.png"));
+        blocks.setSpriteSheet(LoadImageFrom.LoadImageFrom(this.getClass(), "clue/spritesheet.png"));
 
         stone_1 = blocks.getTile(0, 0, 8, 8);
     }

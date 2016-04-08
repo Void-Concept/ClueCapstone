@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,8 +43,8 @@ public class Board extends BGContainer {
             ArrayList<Integer> aList;
 
             while ((line = br.readLine()) != null) {
-                sLine = new ArrayList<String>(Arrays.asList(line.split(",")));
-                aList = new ArrayList<Integer>();
+                sLine = new ArrayList<>(Arrays.asList(line.split(",")));
+                aList = new ArrayList<>();
                 for (String str : sLine) {
                     aList.add(Integer.parseInt(str));
                 }
@@ -59,6 +60,25 @@ public class Board extends BGContainer {
                     board[w][h] = list.get(h).get(w);
                 }
             }
+
+            /*
+            PrintWriter writer = new PrintWriter("./test.txt", "UTF-8");
+            String bline;
+            for (int w = 0; w < tilesX; w++) {
+                bline = "";
+                for (int h = 0; h < tilesY; h++) {
+                    if (board[w][h] == 1) {
+                        board[w][h] = 0;
+                        board[w][h] |= w < tilesX-1 && board[w+1][h] > 0 ? 1 : 0;
+                        board[w][h] |= w > 0 && board[w-1][h] > 0 ? 1<<1 : 0;
+                        board[w][h] |= h < tilesY-1 && board[w][h+1] > 0 ? 1<<2 : 0;
+                        board[w][h] |= h > 0 && board[w][h-1] > 0 ? 1<<3 : 0;
+                    }
+                    bline += board[w][h] + ",";
+                }
+                writer.println(bline);
+            }
+            writer.close();*/
         } catch (Exception e) {
             e.printStackTrace();
             tilesX = 1;
