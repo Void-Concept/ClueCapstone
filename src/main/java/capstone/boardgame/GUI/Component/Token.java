@@ -11,6 +11,7 @@ public class Token extends BGComponent {
     private static final String tag = "Token";
     public Token(int x, int y, int width, int height) {
         super(x, y, width, height);
+        setBackgroundColor(new Color(0, 0, 0, 0));
     }
 
     @Override

@@ -3,7 +3,11 @@ function Packet() {
 	this.parameters = [];
 	
 	this.addParameter = function(param, value) {
-		this.parameters.push([param, value]);
+		this.parameters.push("{\"" + param + "\":\"" + value + "\"}");
+	}
+	
+	this.addParameters = function(params) {
+		this.parameters.push(JSON.stringify(params));
 	}
 	
 	this.getJson = function() {
@@ -11,7 +15,8 @@ function Packet() {
 		json = json.concat("{\"Command\":\""+ this.command +"\",");
 		json = json.concat("\"Parameters\":[");
 		for (var i = 0; i < this.parameters.length; i++) {
-			json = json.concat("{\"" + this.parameters[i][0] + "\":\"" + this.parameters[i][1] + "\"}");
+			//json = json.concat("{\"" + this.parameters[i][0] + "\":\"" + this.parameters[i][1] + "\"}");
+			json = json.concat(this.parameters[i]);
 			if (i != this.parameters.length - 1) {
 				json = json.concat(",");
 			}

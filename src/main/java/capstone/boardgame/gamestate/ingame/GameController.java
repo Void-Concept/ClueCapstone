@@ -2,6 +2,7 @@ package capstone.boardgame.gamestate.ingame;
 
 import capstone.boardgame.GUI.Component.BGComponent;
 import capstone.boardgame.GUI.Component.Label;
+import capstone.boardgame.GUI.Component.Token;
 import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.HTTP.WebSocket.Packet;
 import capstone.boardgame.HTTP.WebSocket.SocketEndpoint;
@@ -52,10 +53,45 @@ public class GameController extends GameState implements SocketListener {
 
         //set up player objects
         ArrayList<Session> sessions = gsm.getPlayers();
-        int id = 0;
+        int number = 0;
         for (Session session : sessions) {
-            players.add(new Player(session.getId(), session));
-            id++;
+            Player player = new Player(session.getId(), session);
+            players.add(player);
+
+            Token token = null;
+            switch (number) {
+                case 0:
+                    token = new Token(10, 10, 10, 10);
+                    token.setColor(Color.magenta);
+                    break;
+                case 1:
+                    token = new Token(20, 10, 10, 10);
+                    token.setColor(Color.red);
+                    break;
+                case 2:
+                    token = new Token(30, 10, 10, 10);
+                    token.setColor(Color.yellow);
+                    break;
+                case 3:
+                    token = new Token(40, 10, 10, 10);
+                    token.setColor(Color.white);
+                    break;
+                case 4:
+                    token = new Token(50, 10, 10, 10);
+                    token.setColor(Color.green);
+                    break;
+                case 5:
+                    token = new Token(60, 10, 10, 10);
+                    token.setColor(Color.blue);
+                    break;
+
+            }
+            if (token != null) {
+                token.setId("player");
+                player.add(token);
+            }
+
+            number++;
         }
 
         //set up packet handler

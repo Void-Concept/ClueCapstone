@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import javax.websocket.Session;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Kyle on 3/23/2016.
@@ -22,7 +23,9 @@ public class Player extends BGContainer {
     private String pid;
     private Session session;
     public boolean enabled = true;
-    public BGContainer remoteView = new BGContainer();
+
+    private ArrayList<BGContainer> remoteViewStates = new ArrayList<>();
+    private String currentView = "old";
 
     public Player(String pid, Session session) {
         this.pid = pid;
@@ -51,20 +54,32 @@ public class Player extends BGContainer {
     }
 
     public void sendView() {
-        Packet packet = new Packet();
-        packet.setCommand("draw");
-        packet.addParameters(remoteView.toJson());
         try {
+            Packet packet = new Packet();
+            packet.setCommand("draw");
+            packet.addParameters(getRemoteView(currentView).toJson());
+
             sendPacket(packet);
         } catch (Exception e) {
 
         }
 
-        Log.d("Player", remoteView.toJson().toString());
+        Log.d("Player", getRemoteView(currentView).toJson().toString());
+    }
+
+    public BGContainer getRemoteView(String id) {
+        for (BGContainer container : remoteViewStates) {
+            if (container.getId().equals(id)) {
+                return container;
+            }
+        }
+        return null;
     }
 
     private void createDefaultClueView() {
-        remoteView.setId("root");
+        BGContainer remoteView = new BGContainer();
+        remoteView.setId("old");
+        currentView = remoteView.getId();
         BGComponent.setDefaultBackgroundColor(Color.white);
 
         Label title = new Label(200, 10, "Clue");
@@ -137,5 +152,6 @@ public class Player extends BGContainer {
         controls.add(dbtn);
 
         remoteView.add(controls);
+        remoteViewStates.add(remoteView);
     }
 }

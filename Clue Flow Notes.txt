@@ -1,0 +1,46 @@
+Main Controller View:
+Direction buttons
+View scoresheet button
+Guess - <suspect; gets warped there. Weapon; gets warped there. Must guess current room>
+Accuse - <suspect, weapon, room. Not necessarily inside, but lose automatically if not>
+
+Scoresheet view:
+Suspects
+Weapons
+Places
+Button back
+
+Suggestion/Accuse view:
+List of names, weapons, and place (though place might not be enabled).
+Can be same view as Scoresheet, but with different mechanics
+
+Suggestion view:
+Lists only cards the player has.
+If none, a none button will appear
+
+Win condition:
+accusation was correct
+
+
+Game loop:
+Player turn
+in room:
+	Move outside room: see outside room
+	guess: > Guess/Accuse View
+		Back button < Main Controller View
+		Pick suspect/weapon
+			Other players: > Suggestion view
+				Choose whichever card
+				< Main Controller View
+			Show player which card was given back, or none
+		< Main Controller View
+	Accuse: > Guess/Accuse View
+		Back Button < Main Controller View
+		Pick suspect/weapon/room
+			View actual case. If win, good. If not, bad.
+		< Main Controller View
+	
+outside room:
+	Roll die
+	Move up to that many spaces
+	Can enter rooms through doors

@@ -34,8 +34,12 @@ function RadioButton(x, y, width, height, lineWidth = 5) {
 			
 			var packet = new Packet();
 			packet.command = "radioToggle";
-			packet.addParameter("view", this.label);
-			packet.addParameter("state", this.checked);
+			var param = new Object();
+			param.view = this.label;
+			param.state = this.checked;
+			//packet.addParameter("view", this.label);
+			//packet.addParameter("state", this.checked);
+			packet.addParameters(param);
 			send(packet.getJson());
 		}
 	}

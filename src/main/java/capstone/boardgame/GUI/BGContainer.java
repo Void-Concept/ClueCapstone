@@ -18,7 +18,8 @@ public class BGContainer extends BGComponent {
     protected ArrayList<BGComponent> drawables = new ArrayList<BGComponent>();
 
     public void add(BGComponent drawable) {
-        drawables.add(drawable);
+        if (drawable != null)
+            drawables.add(drawable);
     }
     public BGComponent getViewByID(String id) {
         BGComponent found = null;
