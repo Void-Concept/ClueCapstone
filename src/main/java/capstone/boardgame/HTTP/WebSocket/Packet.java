@@ -58,4 +58,12 @@ public class Packet {
 
         return packet;
     }
+
+    public static Packet createRejectPacket() {
+        Packet packet = new Packet();
+
+        packet.setCommand("reject");
+
+        return packet;
+    }
 }

@@ -131,6 +131,7 @@ window.setInterval(render, 1000);
 document.getElementById("gameview").addEventListener("click", clickEvent);
 
 var btn = new Button(150, 550, 160, 50, "Start Game");
+btn.label = "StartGame";
 
 btn.clickListener = function(event) {
 	//loadGame();

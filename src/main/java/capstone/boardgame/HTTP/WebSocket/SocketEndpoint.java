@@ -12,7 +12,22 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/boardgame")
 public class SocketEndpoint {
     private static final String tag = "SocketEndpoint";
-    private static SocketListener listener = null;
+    private static SocketListener listener = new SocketListener() {
+        @Override
+        public boolean onOpen(Session session) throws IOException {
+            return false;
+        }
+
+        @Override
+        public void onClose(Session session, CloseReason reason) {
+
+        }
+
+        @Override
+        public void onMessage(Session session, String message) {
+
+        }
+    };
     private static PacketHandler handler = new PacketHandler() {
         @Override
         public void handlePacket(String packet) {
@@ -21,39 +36,37 @@ public class SocketEndpoint {
     };
 
     public static void setListener(SocketListener listener) {
-        SocketEndpoint.listener = listener;
+        if (listener != null ) SocketEndpoint.listener = listener;
     }
-    public static void setPacketHandler(PacketHandler handler) { SocketEndpoint.handler = handler; }
+    public static void setPacketHandler(PacketHandler handler) { if (handler != null) SocketEndpoint.handler = handler; }
 
     @OnOpen
     public void onOpen(Session session) throws IOException {
         Log.d(tag, "onOpen");
-
-        SessionManager.addSession(session);
-        session.getBasicRemote().sendText(Packet.createOpenPacket().getJson());
-        if (listener != null) {
-            listener.onOpen(session);
+        //SessionManager.addSession(session);
+        if (listener.onOpen(session)) {
+            session.getBasicRemote().sendText(Packet.createOpenPacket().getJson());
+        } else {
+            session.getBasicRemote().sendText(Packet.createRejectPacket().getJson());
+            session.close();
         }
     }
 
     @OnClose
     public void onClose(Session session, CloseReason reason) throws IOException {
         Log.d(tag, "onClose");
-        SessionManager.removeSession(session);
-        if (listener != null) {
-            listener.onClose(session, reason);
-        }
+        //SessionManager.removeSession(session);
+        listener.onClose(session, reason);
+
     }
 
     @OnMessage
     public void onMessage(Session session, String message) throws IOException {
         Log.d(tag, "onMessage: " + message);
         //session.getBasicRemote().sendText(message + " (from your server)");
-        if (listener != null) {
-            listener.onMessage(session, message);
-            //Packet.parseJson(message);
-            handler.handlePacket(message);
-        }
+        listener.onMessage(session, message);
+        //Packet.parseJson(message);
+        handler.handlePacket(message);
     }
 
     @OnError

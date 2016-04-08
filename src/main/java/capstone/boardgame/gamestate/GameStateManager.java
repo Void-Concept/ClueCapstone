@@ -1,12 +1,14 @@
 package capstone.boardgame.gamestate;
 
 import capstone.boardgame.gamestate.ingame.GameController;
+import capstone.boardgame.gamestate.menu.MainMenu;
 import capstone.boardgame.main.Log;
 
 import javax.websocket.Session;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -19,8 +21,26 @@ public class GameStateManager implements MouseListener {
 
     public GameStateManager() {
         states = new Stack<>();
-        states.push(new GameController(this));
+        states.push(new MainMenu(this));
         sessions = new SessionManager();
+    }
+
+    public void loadGame(String gameid) {
+        states.push(new GameController(this));
+        states.peek().init();
+    }
+
+    public void addPlayer(Session session) {
+        sessions.addPlayer(session);
+    }
+    public void removePlayer(Session session) {
+        sessions.removePlayer(session);
+    }
+    public int getPlayerCount() {
+        return sessions.getCount();
+    }
+    public ArrayList<Session> getPlayers() {
+        return sessions.getPlayers();
     }
 
     public void tick(double deltaTime) {
