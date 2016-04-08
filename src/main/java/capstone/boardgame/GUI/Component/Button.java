@@ -19,7 +19,7 @@ public class Button extends BGComponent implements MouseListener {
 
     public Button(int x, int y, int width, int height, String text) {
         super(x, y, width, height);
-        this.text = text;
+        this.text = text;;
     }
 
     @Override

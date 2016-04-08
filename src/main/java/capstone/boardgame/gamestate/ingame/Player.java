@@ -5,12 +5,14 @@ import capstone.boardgame.GUI.Component.BGComponent;
 import capstone.boardgame.GUI.Component.Button;
 import capstone.boardgame.GUI.Component.Label;
 import capstone.boardgame.GUI.Component.RadioButton;
+import capstone.boardgame.GUI.Drawable.BGDrawable;
 import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.HTTP.WebSocket.Packet;
 import capstone.boardgame.main.Log;
 import org.json.JSONObject;
 
 import javax.websocket.Session;
+import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -63,6 +65,7 @@ public class Player extends BGContainer {
 
     private void createDefaultClueView() {
         remoteView.setId("root");
+        BGComponent.setDefaultBackgroundColor(Color.white);
 
         Label title = new Label(200, 10, "Clue");
         title.setFont(title.getFont().deriveFont(30.0f));

@@ -30,7 +30,7 @@ public class LevelLoader {
         drawables.add(board);
 
         Label label = new Label(200, 200, "Hello World");
-        label.setColor(Color.gray);
+        label.setColor(Color.white);
         drawables.add(label);
 
         Label players = new Label(1200, 5, "0");

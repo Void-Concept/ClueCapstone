@@ -31,6 +31,8 @@ function PacketHandler() {
 		comp.fontFamily = p.fontFamily;
 		comp.fontSize = p.fontSize;
 		comp.label = p.label;
+		comp.color = p.color;
+		comp.backgroundColor = p.backgroundColor;
 		return comp;
 	}
 	

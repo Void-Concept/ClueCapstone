@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class GameController extends GameState implements SocketListener {
     private static final String tag = "GameController";
     GameGUIContainer gui = new GameGUIContainer();
-    GamePacketHandler handler = new GamePacketHandler();
+    GamePacketHandler handler = new GamePacketHandler(this);
 
     private ArrayList<Player> players = new ArrayList<>();
 
@@ -32,9 +32,19 @@ public class GameController extends GameState implements SocketListener {
         super(gsm);
     }
 
+    public Player getPlayerSession(String id) {
+        for (Player player : players) {
+            if (player.getPid().equals(id)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void init() {
-        BGComponent.setDefaultColor(Color.cyan);
+        BGComponent.setDefaultColor(Color.black);
+        gui.setBackgroundColor(Color.gray);
 
         //add gui elements
         gui.addAll(LevelLoader.loadLevel(""));
@@ -119,6 +129,9 @@ public class GameController extends GameState implements SocketListener {
     @Override
     public void render(Graphics2D g) {
         gui.render(g);
+        for (Player player : players) {
+            player.render(g);
+        }
     }
 
     @Override

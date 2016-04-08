@@ -19,6 +19,7 @@ public class GameGUIContainer extends BGContainer implements MouseListener {
     }
     @Override
     public void renderComponent(Graphics2D g) {
+        g.setBackground(backgroundColor);
         g.setFont(BGComponent.getDefaultfont());
         g.setColor(BGComponent.getDefaultColor());
         super.renderComponent(g);

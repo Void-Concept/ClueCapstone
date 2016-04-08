@@ -4,6 +4,7 @@ function RadioButton(x, y, width, height, lineWidth = 5) {
 	this.width = width;
 	this.height = height;
 	this.checked = false;
+	this.enabled = true;
 	this.lineWidth = lineWidth;
 	
 	this.setChecked = function(state) {
@@ -25,15 +26,18 @@ function RadioButton(x, y, width, height, lineWidth = 5) {
 		}
 	}
 	this.clickEvent = function(event) {
-		this.checked = !this.checked;
-		console.log("Button clicked");
-		console.log(this.checked);
-		render();
-		
-		var packet = new Packet();
-		packet.command = "radioToggle";
-		packet.addParameter("view", this.label);
-		send(packet.getJson());
+		if (this.enabled) {
+			this.checked = !this.checked;
+			console.log("Button clicked");
+			console.log(this.checked);
+			render();
+			
+			var packet = new Packet();
+			packet.command = "radioToggle";
+			packet.addParameter("view", this.label);
+			packet.addParameter("state", this.checked);
+			send(packet.getJson());
+		}
 	}
 }
 RadioButton.prototype = new BGDrawable;

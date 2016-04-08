@@ -30,7 +30,7 @@ public class SocketEndpoint {
     };
     private static PacketHandler handler = new PacketHandler() {
         @Override
-        public void handlePacket(String packet) {
+        public void handlePacket(Session session, String packet) {
             //default packet handler
         }
     };
@@ -66,7 +66,7 @@ public class SocketEndpoint {
         //session.getBasicRemote().sendText(message + " (from your server)");
         listener.onMessage(session, message);
         //Packet.parseJson(message);
-        handler.handlePacket(message);
+        handler.handlePacket(session, message);
     }
 
     @OnError
