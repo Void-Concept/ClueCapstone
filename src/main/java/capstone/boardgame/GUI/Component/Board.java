@@ -64,9 +64,9 @@ public class Board extends BGContainer {
             /*
             PrintWriter writer = new PrintWriter("./test.txt", "UTF-8");
             String bline;
-            for (int w = 0; w < tilesX; w++) {
+            for (int h = 0; h < tilesY; h++) {
                 bline = "";
-                for (int h = 0; h < tilesY; h++) {
+                for (int w = 0; w < tilesX; w++) {
                     if (board[w][h] == 1) {
                         board[w][h] = 0;
                         board[w][h] |= w < tilesX-1 && board[w+1][h] > 0 ? 1 : 0;
@@ -74,7 +74,7 @@ public class Board extends BGContainer {
                         board[w][h] |= h < tilesY-1 && board[w][h+1] > 0 ? 1<<2 : 0;
                         board[w][h] |= h > 0 && board[w][h-1] > 0 ? 1<<3 : 0;
                     }
-                    bline += board[w][h] + ",";
+                    bline += String.format("%02d", board[w][h]) + ",";
                 }
                 writer.println(bline);
             }

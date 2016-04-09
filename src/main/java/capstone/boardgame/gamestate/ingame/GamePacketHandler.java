@@ -22,6 +22,16 @@ public class GamePacketHandler implements PacketHandler {
         this.controller = controller;
     }
 
+    private void movePlayer(BGComponent player, BGContainer board, int xoff, int yoff) {
+        BGComponent moveTile = board.findViewsWithFlag("tilex", (Integer)player.getFlag("tilex") + xoff).findViewWithFlag("tiley", (Integer)player.getFlag("tiley") + yoff);
+
+        player.setX(moveTile.getX() + moveTile.getWidth() / 2 - player.getWidth() / 2 + (Integer)player.getFlag("xoff"));
+        player.setY(moveTile.getY() + moveTile.getHeight() / 2 - player.getHeight() / 2 + (Integer)player.getFlag("yoff"));
+
+        player.setFlag("tilex", moveTile.getFlag("tilex"));
+        player.setFlag("tiley", moveTile.getFlag("tiley"));
+    }
+
     @Override
     public void handlePacket(Session session, String packet) {
         JSONObject obj = new JSONObject(packet);
@@ -36,18 +46,28 @@ public class GamePacketHandler implements PacketHandler {
                     BGComponent playerToken = player.getViewByID("player");
 
                     String button = ((JSONObject)params.get(0)).get("view").toString();
+                    BGContainer board = (BGContainer)controller.getViewById("board");
+                    BGComponent tile = board.findViewsWithFlag("tilex", playerToken.getFlag("tilex")).findViewWithFlag("tiley", playerToken.getFlag("tiley"));
                     switch (button) {
                         case "up arrow":
-                            playerToken.setY(playerToken.getY() - 10);
+                            if (tile.getFlag("walkup").equals(true)) {
+                                movePlayer(playerToken, board, 0, -1);
+                            }
                             break;
                         case "down arrow":
-                            playerToken.setY(playerToken.getY() + 10);
+                            if (tile.getFlag("walkdown").equals(true)) {
+                                movePlayer(playerToken, board, 0, 1);
+                            }
                             break;
                         case "left arrow":
-                            playerToken.setX(playerToken.getX() - 10);
+                            if (tile.getFlag("walkleft").equals(true)) {
+                                movePlayer(playerToken, board, -1, 0);
+                            }
                             break;
                         case "right arrow":
-                            playerToken.setX(playerToken.getX() + 10);
+                            if (tile.getFlag("walkright").equals(true)) {
+                                movePlayer(playerToken, board, 1, 0);
+                            }
                             break;
                     }
 
@@ -70,7 +90,7 @@ public class GamePacketHandler implements PacketHandler {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }

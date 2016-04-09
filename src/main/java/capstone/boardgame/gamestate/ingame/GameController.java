@@ -3,6 +3,7 @@ package capstone.boardgame.gamestate.ingame;
 import capstone.boardgame.GUI.Component.BGComponent;
 import capstone.boardgame.GUI.Component.Label;
 import capstone.boardgame.GUI.Component.Token;
+import capstone.boardgame.GUI.Drawable.BGDrawable;
 import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.HTTP.WebSocket.Packet;
 import capstone.boardgame.HTTP.WebSocket.SocketEndpoint;
@@ -42,6 +43,10 @@ public class GameController extends GameState implements SocketListener {
         return null;
     }
 
+    public BGComponent getViewById(String id) {
+        return gui.getViewByID(id);
+    }
+
     @Override
     public void init() {
         BGComponent.setDefaultColor(Color.black);
@@ -55,7 +60,7 @@ public class GameController extends GameState implements SocketListener {
         ArrayList<Session> sessions = gsm.getPlayers();
         int number = 0;
         for (Session session : sessions) {
-            players.add(LevelLoader.setupPlayer(number, session));
+            players.add(LevelLoader.setupPlayer(number, session, gui));
             number++;
         }
 

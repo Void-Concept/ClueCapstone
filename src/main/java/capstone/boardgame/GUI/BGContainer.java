@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Kyle on 3/14/2016.
@@ -40,6 +41,38 @@ public class BGContainer extends BGComponent {
 
         return found;
     }
+
+    public BGComponent get(int index) {
+        return drawables.get(index);
+    }
+
+    public BGComponent findViewWithFlag(String flag, Object value) {
+        return findViewsWithFlag(flag, value).get(0);
+    }
+
+    public BGContainer findViewsWithFlag(String flag, Object value) {
+        BGContainer found = new BGContainer();
+        for (BGComponent drawable : drawables) {
+            //check this drawable
+            try {
+                if (drawable.getFlag(flag).equals(value)) {
+                    found.add(drawable);
+                }
+            } catch (Exception e) {
+                //drawable doesn't have this flag
+            }
+            //check children drawables if container
+            if (drawable instanceof BGContainer) {
+                found = ((BGContainer)drawable).findViewsWithFlag(flag, value);
+                if (found != null) {
+                    break;
+                }
+            }
+        }
+
+        return found;
+    }
+
     @Override
     public void renderComponent(Graphics2D g) {
         for (BGComponent drawable : drawables) {

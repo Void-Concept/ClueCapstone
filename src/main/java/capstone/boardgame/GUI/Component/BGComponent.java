@@ -65,8 +65,13 @@ public abstract class BGComponent {
     public void addFlag(String key, Object value) {
         flags.put(key, value);
     }
+    public void removeFlag(String key) { try { flags.remove(key); } catch (Exception e) {} }
     public Object getFlag(String key) {
         return flags.get(key);
+    }
+    public void setFlag(String key, Object value) {
+        removeFlag(key);
+        addFlag(key, value);
     }
 
     public void setX(int x) {
