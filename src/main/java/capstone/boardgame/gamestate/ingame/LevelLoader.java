@@ -30,56 +30,23 @@ public class LevelLoader {
         //ignore path for now
         ArrayList<BGComponent> drawables = new ArrayList<>();
 
-
-        /*Board board = new Board(320, 40, 640, 640, "clue/ClueBoard.csv");
         SpriteSheet sheet = new SpriteSheet();
         sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/spritesheet.png"));
-        board.setStateTile(1, sheet.getTile(0, 0, 8, 8));
-        drawables.add(board);*/
-        SpriteSheet sheet = new SpriteSheet();
-        sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/spritesheet.png"));
-        drawables.add(createBoard(320, 40, 640, 640, sheet.getTile(0, 0, 8, 8)));
+        drawables.add(createBoard(320, 80, 640, 640, sheet.getTile(0, 0, 8, 8)));
 
-        Label label = new Label(200, 200, "Hello World");
+        /*Label label = new Label(200, 200, "Hello World");
         label.setColor(Color.white);
-        drawables.add(label);
+        drawables.add(label);*/
+
+        Button turn = new Button(530, 10, 220, 40, "Colonel Mustard's Turn");
+        turn.setBackgroundColor(Color.yellow);
+        turn.setColor(Color.black);
+        drawables.add(turn);
 
         Label players = new Label(1250, 5, "0");
         players.setId("NumPlayers");
         players.setColor(Color.GREEN);
         drawables.add(players);
-
-        Button btn = new Button(0, 500, 100, 30, "Testing");
-        btn.setColor(Color.green);
-        btn.setMouseListener(new MouseListener() {
-            private static final String tag = "MouseListener";
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Log.d(tag, "Clicked");
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                Log.d(tag, "Pressed");
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                Log.d(tag, "Released");
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                Log.d(tag, "Entered");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                Log.d(tag, "Exited");
-            }
-        });
-        drawables.add(btn);
-
         return drawables;
     }
 
