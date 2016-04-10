@@ -99,6 +99,7 @@ function render() {
 	var gameview = document.getElementById("gameview");
 	var wAR = w / dimX;
 	var hAR = h / dimY;
+	document.body.style.backgroundColor = gameview.style.background;
 
 	if (Math.abs((wAR - hAR)/((wAR + hAR) / 2)) > 0.05) {
 		if (wAR < hAR) {
@@ -127,16 +128,24 @@ function render() {
 	connStatus.render(ctx);
 }
 
+function init() {
+	gui.clear();
+	
+	gameview.style.background = "gray";
+
+	var btn = new Button(150, 550, 160, 50, "Start Game");
+	btn.label = "StartGame";
+
+	btn.clickListener = function(event) {
+		//loadGame();
+	};
+	gui.addComponent(btn);
+}
+
 window.setInterval(render, 1000);
 document.getElementById("gameview").addEventListener("click", clickEvent);
 
-var btn = new Button(150, 550, 160, 50, "Start Game");
-btn.label = "StartGame";
-
-btn.clickListener = function(event) {
-	//loadGame();
-};
-gui.addComponent(btn);
+init();
 
 socketListener = function(text) {
 	packetHandler.handlePacket(text);

@@ -76,7 +76,11 @@ public class AbsGameLoop extends JPanel implements Runnable {
 
             if (shouldRender) {
                 frames++;
-                render();
+                try {
+                    render();
+                } catch (Exception e) {
+
+                }
             }
 
             try {Thread.sleep(2);} catch (InterruptedException e) {e.printStackTrace();}

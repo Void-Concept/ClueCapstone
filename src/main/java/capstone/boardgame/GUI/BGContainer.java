@@ -18,10 +18,20 @@ public class BGContainer extends BGComponent {
 
     protected ArrayList<BGComponent> drawables = new ArrayList<BGComponent>();
 
-    public void add(BGComponent drawable) {
-        if (drawable != null)
-            drawables.add(drawable);
+    public boolean add(BGComponent drawable) {
+        if (drawable != null) {
+            drawable.setParent(this);
+            return drawables.add(drawable);
+        }
+        return false;
     }
+    public boolean remove(BGComponent drawable) {
+        return this.drawables.remove(drawable);
+    }
+    public boolean remove(String id){
+        return remove(getViewByID(id));
+    }
+
     public BGComponent getViewByID(String id) {
         BGComponent found = null;
         for (BGComponent drawable : drawables) {
@@ -40,6 +50,10 @@ public class BGContainer extends BGComponent {
         }
 
         return found;
+    }
+
+    public int size() {
+        return drawables.size();
     }
 
     public BGComponent get(int index) {
@@ -63,9 +77,9 @@ public class BGContainer extends BGComponent {
             }
             //check children drawables if container
             if (drawable instanceof BGContainer) {
-                found = ((BGContainer)drawable).findViewsWithFlag(flag, value);
-                if (found != null) {
-                    break;
+                BGContainer innerFound = ((BGContainer)drawable).findViewsWithFlag(flag, value);
+                for (int i = 0; i < innerFound.size(); i++) {
+                    found.add(innerFound.get(i));
                 }
             }
         }

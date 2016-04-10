@@ -1,8 +1,6 @@
 Main Controller View:
 Direction buttons
 View scoresheet button
-Guess - <suspect; gets warped there. Weapon; gets warped there. Must guess current room>
-Accuse - <suspect, weapon, room. Not necessarily inside, but lose automatically if not>
 
 Scoresheet view:
 Suspects

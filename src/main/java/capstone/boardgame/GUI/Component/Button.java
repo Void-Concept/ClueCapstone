@@ -19,13 +19,18 @@ public class Button extends BGComponent implements MouseListener {
 
     public Button(int x, int y, int width, int height, String text) {
         super(x, y, width, height);
-        this.text = text;;
+        this.text = text;
     }
 
     @Override
     public void tick(double deltaTime) {
 
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+    public String getText() { return this.text; }
 
     @Override
     protected void renderComponent(Graphics2D g) {

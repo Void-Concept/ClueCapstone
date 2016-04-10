@@ -37,9 +37,176 @@ public class GamePacketHandler implements PacketHandler {
         JSONObject obj = new JSONObject(packet);
         String command = (String) obj.get("Command");
         JSONArray params = (JSONArray)obj.get("Parameters");
-        Player player = controller.getPlayerSession(session.getId());
-        Log.d(tag, params.toString());
 
+        Player player = controller.getPlayerSession(session.getId());
+
+        switch (player.getCurrentRemoteView()) {
+            case "old":
+                handleOldPacket(command, params, player);
+                break;
+            case "main":
+                handleMainPacket(command, params, player);
+                break;
+            case "suspect":
+                handleSuspectPacket(command, params, player);
+                break;
+            case "accusation":
+                handleAccusationPacket(command, params, player);
+                break;
+        }
+    }
+
+    //parameter: true if accusing, false if suggesting
+    private void transitionToAccusation(Player player, boolean accusation) {
+        BGContainer remoteView = player.getRemoteView("accusation");
+
+        BGContainer group = remoteView.findViewsWithFlag("group", "place");
+        for (int i = 0; i < group.size(); i++) {
+            BGComponent view = group.get(i);
+            if (view instanceof RadioButton) {
+                if (((RadioButton) view).isChecked()) {
+
+                    break;
+                }
+            }
+        }
+    }
+
+    private void handleAccusationPacket(String command, JSONArray params, Player player) {
+        try {
+            switch (command) {
+                case "onClick":
+                    String button = ((JSONObject)params.get(0)).get("view").toString();
+
+                    switch (button) {
+                        case "submit":
+                            //check to see if one of each is checked, as well as which
+                            BGContainer remoteView = player.getRemoteView(player.getCurrentRemoteView());
+
+                            BGContainer group = remoteView.findViewsWithFlag("group", "suspect");
+                            boolean good = false;
+                            for (int i = 0; i < group.size(); i++) {
+                                BGComponent view = group.get(i);
+                                if (view instanceof RadioButton) {
+                                    if (((RadioButton) view).isChecked()) {
+                                        good = true;
+                                        player.setFlag("accuse-suspect", view.getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!good)
+                                break;
+
+                            group = remoteView.findViewsWithFlag("group", "weapon");
+                            good = false;
+                            for (int i = 0; i < group.size(); i++) {
+                                BGComponent view = group.get(i);
+                                if (view instanceof RadioButton) {
+                                    if (((RadioButton) view).isChecked()) {
+                                        good = true;
+                                        player.setFlag("accuse-weapon", view.getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!good)
+                                break;
+
+                            group = remoteView.findViewsWithFlag("group", "place");
+                            good = false;
+                            for (int i = 0; i < group.size(); i++) {
+                                BGComponent view = group.get(i);
+                                if (view instanceof RadioButton) {
+                                    if (((RadioButton) view).isChecked()) {
+                                        good = true;
+                                        player.setFlag("accuse-place", view.getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!good)
+                                break;
+
+                            player.setCurrentRemoteView((String)player.getFlag("suspect return"));
+                            player.sendView();
+                            break;
+                    }
+
+                    break;
+                case "radioToggle":
+                    try {
+                        BGContainer remoteView = player.getRemoteView(player.getCurrentRemoteView());
+                        JSONObject radioParams = (JSONObject)params.get(0);
+                        String radioButton = radioParams.get("view").toString();
+                        String state = radioParams.get("state").toString();
+
+                        RadioButton rb = ((RadioButton) remoteView.getViewByID(radioButton));
+                        BGContainer group = remoteView.findViewsWithFlag("group", rb.getFlag("group"));
+
+                        if (state.equals("true")) {
+                            for (int i = 0; i < group.size(); i++) {
+                                BGComponent view = group.get(i);
+                                if (view instanceof RadioButton) {
+                                    ((RadioButton) view).setChecked(false);
+                                }
+                            }
+                            rb.setChecked(true);
+                        } else {
+                            rb.setChecked(false);
+                        }
+                        player.sendView();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "refresh":
+                    Log.d(tag, "TODO: refresh");
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleSuspectPacket(String command, JSONArray params, Player player) {
+        try {
+            switch (command) {
+                case "onClick":
+                    String button = ((JSONObject)params.get(0)).get("view").toString();
+
+                    switch (button) {
+                        case "return":
+                            player.setCurrentRemoteView((String)player.getFlag("suspect return"));
+                            player.sendView();
+                            break;
+                    }
+
+                    break;
+                case "radioToggle":
+                    Log.d(tag, "TODO: radioToggle");
+                    try {
+                        BGContainer remoteView = player.getRemoteView(player.getCurrentRemoteView());
+                        JSONObject radioParams = (JSONObject)params.get(0);
+                        String radioButton = radioParams.get("view").toString();
+                        String state = radioParams.get("state").toString();
+                        ((RadioButton) remoteView.getViewByID(radioButton)).setChecked(state.equals("true"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "refresh":
+                    Log.d(tag, "TODO: refresh");
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleMainPacket(String command, JSONArray params, Player player) {
         try {
             switch (command) {
                 case "onClick":
@@ -48,6 +215,59 @@ public class GamePacketHandler implements PacketHandler {
                     String button = ((JSONObject)params.get(0)).get("view").toString();
                     BGContainer board = (BGContainer)controller.getViewById("board");
                     BGComponent tile = board.findViewsWithFlag("tilex", playerToken.getFlag("tilex")).findViewWithFlag("tiley", playerToken.getFlag("tiley"));
+
+                    switch (button) {
+                        case "up arrow":
+                            if (tile.getFlag("walkup").equals(true)) {
+                                movePlayer(playerToken, board, 0, -1);
+                            }
+                            break;
+                        case "down arrow":
+                            if (tile.getFlag("walkdown").equals(true)) {
+                                movePlayer(playerToken, board, 0, 1);
+                            }
+                            break;
+                        case "left arrow":
+                            if (tile.getFlag("walkleft").equals(true)) {
+                                movePlayer(playerToken, board, -1, 0);
+                            }
+                            break;
+                        case "right arrow":
+                            if (tile.getFlag("walkright").equals(true)) {
+                                movePlayer(playerToken, board, 1, 0);
+                            }
+                            break;
+                        case "view suspects":
+                            player.setFlag("suspect return", "main");
+                            player.setCurrentRemoteView("suspect");
+                            player.sendView();
+                            break;
+                    }
+
+                    break;
+                case "radioToggle":
+                    Log.d(tag, "TODO: radioToggle");
+                    break;
+                case "refresh":
+                    Log.d(tag, "TODO: refresh");
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleOldPacket(String command, JSONArray params, Player player) {
+        try {
+            switch (command) {
+                case "onClick":
+                    BGComponent playerToken = player.getViewByID("player");
+
+                    String button = ((JSONObject)params.get(0)).get("view").toString();
+                    BGContainer board = (BGContainer)controller.getViewById("board");
+                    BGComponent tile = board.findViewsWithFlag("tilex", playerToken.getFlag("tilex")).findViewWithFlag("tiley", playerToken.getFlag("tiley"));
+
                     switch (button) {
                         case "up arrow":
                             if (tile.getFlag("walkup").equals(true)) {

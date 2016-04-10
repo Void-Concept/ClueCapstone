@@ -34,6 +34,8 @@ public abstract class BGComponent {
 
     protected boolean visible = true;
 
+    protected BGComponent parent = null;
+
     public static void setDefaultFont(Font font) {
         defaultfont = font;
     }
@@ -60,6 +62,13 @@ public abstract class BGComponent {
         this();
         this.x = x; this.y = y;
         this.width = width; this.height = height;
+    }
+
+    public void setParent(BGComponent parent) {
+        this.parent = parent;
+    }
+    public BGComponent getParent() {
+        return parent;
     }
 
     public void addFlag(String key, Object value) {
@@ -131,7 +140,7 @@ public abstract class BGComponent {
         /*if (color.getAlpha() == 0xFF) {
             return "#" + String.format("%06X", color.getRGB() & 0xFFFFFF);
         }*/
-        return "rgba(" + color.getRed() + "," + color.getBlue() + "," + color.getGreen() + "," + color.getAlpha() + ")";
+        return "rgba(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "," + color.getAlpha() + ")";
     }
 
     public JSONObject toJson() {

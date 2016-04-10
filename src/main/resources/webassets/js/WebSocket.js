@@ -34,6 +34,7 @@ function openSocket() {
 	webSocket.onclose = function(event) {
 		//writeResponse("Connection closed");
 		connStatus.color = "#FF0000";
+		init();
 		render();
 	};
 }

@@ -11,7 +11,9 @@ function PacketHandler() {
 				case "draw":
 					gui.clear();
 					comp = this.convertComponent(jpacket.Parameters[0]);
-					//console.log(comp);
+					console.log(comp.backgroundColor);
+					var gameview = document.getElementById("gameview");
+					gameview.style.background = comp.backgroundColor
 					gui.addComponent(comp);
 					break;
 				case "reject":
@@ -61,6 +63,7 @@ function PacketHandler() {
 				comp = this.drawablePart(p, comp);
 				comp.checked = p.checked;
 				comp.lineWidth = p.lineWidth;
+				comp.enabled = p.enabled;
 				break;
 			case "button":
 				//console.log("Got button: " + p.label);

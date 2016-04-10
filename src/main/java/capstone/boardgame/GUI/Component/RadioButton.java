@@ -10,6 +10,7 @@ import java.awt.*;
  */
 public class RadioButton extends BGComponent {
     private boolean checked = false;
+    private boolean enabled = true;
     private int lineWidth = 5;
 
     public RadioButton(int x, int y, int width, int height, int lineWidth) {
@@ -18,10 +19,18 @@ public class RadioButton extends BGComponent {
     }
 
     public void setChecked(boolean checked) {
-        this.checked = checked;
+        if (enabled)
+            this.checked = checked;
     }
     public boolean isChecked() {
         return this.checked;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    public boolean isEnable() {
+        return enabled;
     }
 
     @Override
@@ -48,6 +57,7 @@ public class RadioButton extends BGComponent {
 
         obj.put("checked", checked);
         obj.put("lineWidth", lineWidth);
+        obj.put("enabled", enabled);
 
         return obj;
     }

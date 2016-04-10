@@ -26,6 +26,7 @@ public class Player extends BGContainer {
 
     private ArrayList<BGContainer> remoteViewStates = new ArrayList<>();
     private String currentView = "old";
+    private Color viewBackground = Color.gray;
 
     public Player(String pid, Session session) {
         this.pid = pid;
@@ -79,10 +80,17 @@ public class Player extends BGContainer {
     public String getCurrentRemoteView() {
         return currentView;
     }
+    public void setRemoteViewBackground(Color color) {
+        this.viewBackground = color;
+    }
+    public Color getRemoteViewBackground() {
+        return this.viewBackground;
+    }
 
     public BGContainer getRemoteView(String id) {
         for (BGContainer container : remoteViewStates) {
             if (container.getId().equals(id)) {
+                container.setBackgroundColor(viewBackground);
                 return container;
             }
         }

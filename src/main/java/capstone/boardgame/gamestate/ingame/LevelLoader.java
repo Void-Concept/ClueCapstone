@@ -26,17 +26,70 @@ import java.util.InputMismatchException;
  * Created by Kyle on 3/23/2016.
  */
 public class LevelLoader {
+    private static final String tag = "LevelLoader";
     public static ArrayList<BGComponent> loadLevel(String path) {
         //ignore path for now
         ArrayList<BGComponent> drawables = new ArrayList<>();
+
+        SpriteSheet board = new SpriteSheet();
+        board.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/boardbackground.png"));
+        Tile boardBackground = new Tile(317, 77, 630, 631, board.getTile(0, 0, 194, 202));
+        drawables.add(boardBackground);
 
         SpriteSheet sheet = new SpriteSheet();
         sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/spritesheet.png"));
         drawables.add(createBoard(320, 80, 640, 640, sheet.getTile(0, 0, 8, 8)));
 
-        /*Label label = new Label(200, 200, "Hello World");
+        Label label = new Label(380, 120, "Study");
         label.setColor(Color.white);
-        drawables.add(label);*/
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(615, 155, "Hall");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(820, 140, "Lounge");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(370, 280, "Library");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(780, 380, "Dining Room");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(335, 430, "Billards Room");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(340, 610, "Conservatory");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(585, 580, "Ball Room");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(830, 610, "Kitchen");
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
+
+        label = new Label(580, 400, "Clue");
+        label.setFont(label.getFont().deriveFont(40.0f));
+        label.setColor(Color.white);
+        label.applyEffect(2);
+        drawables.add(label);
 
         Button turn = new Button(530, 10, 220, 40, "Colonel Mustard's Turn");
         turn.setBackgroundColor(Color.yellow);
@@ -114,7 +167,14 @@ public class LevelLoader {
 
         BGContainer remoteView = createOldClueView();
         player.addRemoteView(remoteView);
+        remoteView = createSuspectView();
+        player.addRemoteView(remoteView);
+        remoteView = createControllerView();
+        player.addRemoteView(remoteView);
+        remoteView = createAccusationView();
+        player.addRemoteView(remoteView);
         player.setCurrentRemoteView(remoteView.getId());
+        player.setFlag("suspect return", "main");
 
         Token token = new Token(0, 0, 15, 15);
         BGComponent tile = null;
@@ -124,42 +184,48 @@ public class LevelLoader {
                 token.addFlag("xoff", -3);
                 token.addFlag("yoff", 3);
                 token.setColor(Color.magenta);
-                remoteView.setBackgroundColor(Color.magenta);
+                player.setRemoteViewBackground(Color.magenta);
+                Log.d(tag, "Prof. Plum");
                 break;
             case 1:
                 tile = board.findViewWithFlag("person", 1);
                 token.addFlag("xoff", 3);
                 token.addFlag("yoff", 3);
                 token.setColor(Color.red);
-                remoteView.setBackgroundColor(Color.red);
+                player.setRemoteViewBackground(Color.red);
+                Log.d(tag, "Ms. Scarlett");
                 break;
             case 2:
                 tile = board.findViewWithFlag("person", 2);
                 token.addFlag("xoff", 0);
                 token.addFlag("yoff", 4);
                 token.setColor(Color.yellow);
-                remoteView.setBackgroundColor(Color.yellow);
+                player.setRemoteViewBackground(Color.yellow);
+                Log.d(tag, "Colonel Mustard");
                 break;
             case 3:
                 tile = board.findViewWithFlag("person", 3);
                 token.addFlag("xoff", 3);
                 token.addFlag("yoff", -3);
                 token.setColor(Color.white);
-                remoteView.setBackgroundColor(Color.white);
+                player.setRemoteViewBackground(Color.white);
+                Log.d(tag, "Mrs. White");
                 break;
             case 4:
                 tile = board.findViewWithFlag("person", 4);
                 token.addFlag("xoff", -3);
                 token.addFlag("yoff", -3);
                 token.setColor(Color.green);
-                remoteView.setBackgroundColor(Color.green);
+                player.setRemoteViewBackground(Color.green);
+                Log.d(tag, "Mr. Green");
                 break;
             case 5:
                 tile = board.findViewWithFlag("person", 5);
                 token.addFlag("xoff", 0);
                 token.addFlag("yoff", -4);
                 token.setColor(Color.blue);
-                remoteView.setBackgroundColor(Color.blue);
+                player.setRemoteViewBackground(Color.blue);
+                Log.d(tag, "Ms. Peacock");
                 break;
 
         }
@@ -173,6 +239,138 @@ public class LevelLoader {
         player.add(token);
 
         return player;
+    }
+
+    private static BGContainer createAccusationView() {
+        BGContainer remoteView = createSuspectView();
+        remoteView.setId("accusation");
+        remoteView.remove("return");
+
+        Button ret = new Button(250, 580, 150, 50, "Submit");
+        ret.setId("submit");
+        ret.setFont(ret.getFont().deriveFont(30.0f));
+        remoteView.add(ret);
+
+        return remoteView;
+    }
+
+    private static BGContainer createControllerView() {
+        BGContainer remoteView = new BGContainer();
+        remoteView.setId("main");
+
+        Label title = new Label(180, 10, "Clue");
+        title.setFont(title.getFont().deriveFont(60.0f));
+        remoteView.add(title);
+
+        BGContainer controls = new BGContainer();
+        controls.setId("controls");
+
+        Button ubtn = new Button(165, 200, 150, 150, "^");
+        ubtn.setId("up arrow");
+        controls.add(ubtn);
+
+        Button rbtn = new Button(315, 350, 150, 150, ">");
+        rbtn.setId("right arrow");
+        controls.add(rbtn);
+
+        Button lbtn = new Button(15, 350, 150, 150, "<");
+        lbtn.setId("left arrow");
+        controls.add(lbtn);
+
+        Button dbtn = new Button(165, 500, 150, 150, "v");
+        dbtn.setId("down arrow");
+        controls.add(dbtn);
+
+        remoteView.add(controls);
+
+        Button ss = new Button(115, 725, 250, 60, "Suspect Sheet");
+        ss.setId("view suspects");
+        ss.setFont(ss.getFont().deriveFont(30.0f));
+        remoteView.add(ss);
+
+        return remoteView;
+    }
+
+    private static BGContainer createSuspectView() {
+        BGContainer remoteView = new BGContainer();
+        remoteView.setId("suspect");
+        BGComponent.setDefaultBackgroundColor(Color.white);
+
+        Label title = new Label(180, 10, "Clue");
+        title.setFont(title.getFont().deriveFont(60.0f));
+        remoteView.add(title);
+
+        String[] suspects = {"Mr. Green", "Colonel Mustard", "Ms. Peacock", "Prof. Plum", "Ms. Scarlet", "Ms. White"};
+        String[] weapons = {"Candlestick", "Knife", "Lead Pipe", "Pistol", "Rope", "Wrench"};
+        String[] places = {"Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study"};
+
+        BGContainer suspectContainer = new BGContainer();
+        suspectContainer.setId("suspects");
+
+        Label suspect = new Label(20, 90, "Suspects");
+        suspect.setId("suspect label");
+        suspect.setFont(suspect.getFont().deriveFont(30.0f));
+        suspectContainer.add(suspect);
+
+        for (int i = 0; i < suspects.length; i++) {
+            RadioButton button = new RadioButton(10, 130 + 40*i, 40, 40, 2);
+            button.setId("checkbox-"+suspects[i]);
+            button.addFlag("group", "suspect");
+            suspectContainer.add(button);
+
+            Label aLabel = new Label(55, 140 + 40*i, suspects[i]);
+            aLabel.setFont(aLabel.getFont().deriveFont(25.0f));
+            suspectContainer.add(aLabel);
+        }
+        remoteView.add(suspectContainer);
+
+
+        BGContainer weaponContainer = new BGContainer();
+        weaponContainer.setId("weapons");
+
+        Label weapon = new Label(20, 400, "Weapons");
+        weapon.setId("weapon label");
+        weapon.setFont(weapon.getFont().deriveFont(30.0f));
+        weaponContainer.add(weapon);
+
+        for (int i = 0; i < weapons.length; i++) {
+            RadioButton button = new RadioButton(10, 440 + 40*i, 40, 40, 2);
+            button.setId("checkbox-"+weapons[i]);
+            button.addFlag("group", "weapon");
+            weaponContainer.add(button);
+
+            Label aLabel = new Label(55, 450 + 40*i, weapons[i]);
+            aLabel.setFont(aLabel.getFont().deriveFont(25.0f));
+            weaponContainer.add(aLabel);
+        }
+        remoteView.add(weaponContainer);
+
+        BGContainer placeContainer = new BGContainer();
+        placeContainer.setId("places");
+
+        Label place = new Label(260, 90, "Places");
+        place.setId("places label");
+        place.setFont(place.getFont().deriveFont(30.0f));
+        placeContainer.add(place);
+
+        for (int i = 0; i < places.length; i++) {
+            RadioButton button = new RadioButton(250, 130 + 40*i, 40, 40, 2);
+            button.setId("checkbox-"+places[i]);
+            button.addFlag("group", "place");
+            placeContainer.add(button);
+
+            Label aLabel = new Label(295, 140 + 40*i, places[i]);
+            aLabel.setFont(aLabel.getFont().deriveFont(25.0f));
+            placeContainer.add(aLabel);
+        }
+        remoteView.add(placeContainer);
+
+        Button ret = new Button(250, 580, 150, 50, "Back");
+        ret.setId("return");
+        ret.setFont(ret.getFont().deriveFont(30.0f));
+        remoteView.add(ret);
+
+        return remoteView;
     }
 
     private static BGContainer createOldClueView() {
