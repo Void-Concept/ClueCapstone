@@ -107,7 +107,8 @@ public class BGContainer extends BGComponent {
 
         JSONArray arr = new JSONArray();
         for (BGComponent drawable : drawables) {
-            arr.put(drawable.toJson());
+            if (drawable.isVisible())
+                arr.put(drawable.toJson());
         }
         obj.put("components", arr);
 

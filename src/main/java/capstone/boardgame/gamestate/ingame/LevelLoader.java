@@ -252,17 +252,22 @@ public class LevelLoader {
         title.setFont(title.getFont().deriveFont(60.0f));
         remoteView.add(title);
 
-        Button accuse = new Button(50, 300, 150, 60, "Accuse");
-        accuse.setId("accuse");
-        remoteView.add(accuse);
-
-        Button suggest = new Button(280, 300, 150, 60, "Suggest");
+        Button suggest = new Button(50, 300, 150, 60, "Suggest");
         suggest.setId("suggest");
         remoteView.add(suggest);
+
+        Button accuse = new Button(280, 300, 150, 60, "Accuse");
+        accuse.setId("accuse");
+        remoteView.add(accuse);
 
         Button exit = new Button(165, 450, 150, 60, "Exit room");
         exit.setId("exit");
         remoteView.add(exit);
+
+        Button passage = new Button(165, 600, 150, 60, "Secret Passage");
+        passage.setId("secret passage");
+        remoteView.add(passage);
+        passage.setVisibility(false);
 
         return remoteView;
     }

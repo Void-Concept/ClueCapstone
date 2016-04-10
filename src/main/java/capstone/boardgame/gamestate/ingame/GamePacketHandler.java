@@ -65,6 +65,27 @@ public class GamePacketHandler implements PacketHandler {
         }
     }
 
+    private void transitionToRoom(Player player) {
+        String room = (String)player.getFlag("currRoom");
+        BGContainer remoteView = player.getRemoteView("room");
+
+        switch (room) {
+            case "Study":
+            case "Lounge":
+            case "Kitchen":
+            case "Conservatory":
+                remoteView.getViewByID("secret passage").setVisibility(true);
+                break;
+            default:
+                remoteView.getViewByID("secret passage").setVisibility(false);
+                break;
+        }
+
+
+        player.setCurrentRemoteView("room");
+        player.sendView();
+    }
+
     private void handleRoomPacket(String command, JSONArray params, Player player) {
         try {
             switch (command) {
@@ -81,6 +102,9 @@ public class GamePacketHandler implements PacketHandler {
                         case "exit":
                             player.setCurrentRemoteView("main");
                             player.sendView();
+                            break;
+                        case "secret passage":
+                            Log.d(tag, "TODO: secret passage");
                             break;
                     }
 
@@ -307,8 +331,7 @@ public class GamePacketHandler implements PacketHandler {
                         if (playerToken.getFlag("enteredRoom").equals(true)) {
                             player.setFlag("currRoom", playerToken.getFlag("currRoom"));
                             playerToken.setFlag("enteredRoom", false);
-                            player.setCurrentRemoteView("room");
-                            player.sendView();
+                            transitionToRoom(player);
                         }
                     } catch (Exception e) {
                         playerToken.setFlag("enteredRoom", false);
