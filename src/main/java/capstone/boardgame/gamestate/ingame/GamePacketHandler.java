@@ -30,6 +30,12 @@ public class GamePacketHandler implements PacketHandler {
 
         player.setFlag("tilex", moveTile.getFlag("tilex"));
         player.setFlag("tiley", moveTile.getFlag("tiley"));
+
+        if (moveTile.getFlag("isdoor").equals(true)) {
+            String[] places = {"Study", "Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library"};
+            player.setFlag("currRoom", places[(Integer)moveTile.getFlag("room") - 1]);
+            player.setFlag("enteredRoom", true);
+        }
     }
 
     @Override
@@ -53,6 +59,42 @@ public class GamePacketHandler implements PacketHandler {
             case "accusation":
                 handleAccusationPacket(command, params, player);
                 break;
+            case "room":
+                handleRoomPacket(command, params, player);
+                break;
+        }
+    }
+
+    private void handleRoomPacket(String command, JSONArray params, Player player) {
+        try {
+            switch (command) {
+                case "onClick":
+                    String button = ((JSONObject)params.get(0)).get("view").toString();
+
+                    switch (button) {
+                        case "accuse":
+                            transitionToAccusation(player, true);
+                            break;
+                        case "suggest":
+                            transitionToAccusation(player, false);
+                            break;
+                        case "exit":
+                            player.setCurrentRemoteView("main");
+                            player.sendView();
+                            break;
+                    }
+
+                    break;
+                case "radioToggle":
+                    Log.d(tag, "TODO: radioToggle");
+                    break;
+                case "refresh":
+                    Log.d(tag, "TODO: refresh");
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -60,14 +102,46 @@ public class GamePacketHandler implements PacketHandler {
     private void transitionToAccusation(Player player, boolean accusation) {
         BGContainer remoteView = player.getRemoteView("accusation");
 
-        BGContainer group = remoteView.findViewsWithFlag("group", "place");
+        //if a suggestion, disable everything and set room
+        if (!accusation) {
+            BGContainer group = remoteView.findViewsWithFlag("group", "place");
+            for (int i = 0; i < group.size(); i++) {
+                BGComponent view = group.get(i);
+                if (view instanceof RadioButton) {
+                    if (view.getId().equals(player.getFlag("currRoom")))
+                        ((RadioButton) view).setChecked(true);
+                    else
+                        ((RadioButton) view).setChecked(false);
+                    ((RadioButton) view).setEnabled(false);
+                }
+            }
+        }
+        player.setFlag("accuse return", player.getCurrentRemoteView());
+        player.setCurrentRemoteView("accusation");
+        player.sendView();
+    }
+
+    private boolean checkAccusation(BGContainer group, Player player, String flag) {
+        boolean good = false;
         for (int i = 0; i < group.size(); i++) {
             BGComponent view = group.get(i);
             if (view instanceof RadioButton) {
                 if (((RadioButton) view).isChecked()) {
-
+                    good = true;
+                    player.setFlag(flag, view.getId());
                     break;
                 }
+            }
+        }
+        return good;
+    }
+
+    private void resetCheckboxes(BGContainer group) {
+        for (int i = 0; i < group.size(); i++) {
+            BGComponent view = group.get(i);
+            if (view instanceof RadioButton) {
+                ((RadioButton) view).setEnabled(true);
+                ((RadioButton) view).setChecked(false);
             }
         }
     }
@@ -84,51 +158,37 @@ public class GamePacketHandler implements PacketHandler {
                             BGContainer remoteView = player.getRemoteView(player.getCurrentRemoteView());
 
                             BGContainer group = remoteView.findViewsWithFlag("group", "suspect");
-                            boolean good = false;
-                            for (int i = 0; i < group.size(); i++) {
-                                BGComponent view = group.get(i);
-                                if (view instanceof RadioButton) {
-                                    if (((RadioButton) view).isChecked()) {
-                                        good = true;
-                                        player.setFlag("accuse-suspect", view.getId());
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!good)
+                            if (!checkAccusation(group, player, "accuse-suspect"))
                                 break;
 
                             group = remoteView.findViewsWithFlag("group", "weapon");
-                            good = false;
-                            for (int i = 0; i < group.size(); i++) {
-                                BGComponent view = group.get(i);
-                                if (view instanceof RadioButton) {
-                                    if (((RadioButton) view).isChecked()) {
-                                        good = true;
-                                        player.setFlag("accuse-weapon", view.getId());
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!good)
+                            if (!checkAccusation(group, player, "accuse-weapon"))
                                 break;
 
                             group = remoteView.findViewsWithFlag("group", "place");
-                            good = false;
-                            for (int i = 0; i < group.size(); i++) {
-                                BGComponent view = group.get(i);
-                                if (view instanceof RadioButton) {
-                                    if (((RadioButton) view).isChecked()) {
-                                        good = true;
-                                        player.setFlag("accuse-place", view.getId());
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!good)
+                            if (!checkAccusation(group, player, "accuse-place"))
                                 break;
 
-                            player.setCurrentRemoteView((String)player.getFlag("suspect return"));
+                            group = remoteView.findViewsWithFlag("group", "suspect");
+                            resetCheckboxes(group);
+                            group = remoteView.findViewsWithFlag("group", "weapon");
+                            resetCheckboxes(group);
+                            group = remoteView.findViewsWithFlag("group", "place");
+                            resetCheckboxes(group);
+
+                            player.setCurrentRemoteView((String)player.getFlag("accuse return"));
+                            player.sendView();
+                            break;
+                        case "return":
+                            remoteView = player.getRemoteView(player.getCurrentRemoteView());
+                            group = remoteView.findViewsWithFlag("group", "suspect");
+                            resetCheckboxes(group);
+                            group = remoteView.findViewsWithFlag("group", "weapon");
+                            resetCheckboxes(group);
+                            group = remoteView.findViewsWithFlag("group", "place");
+                            resetCheckboxes(group);
+
+                            player.setCurrentRemoteView((String)player.getFlag("accuse return"));
                             player.sendView();
                             break;
                     }
@@ -242,6 +302,17 @@ public class GamePacketHandler implements PacketHandler {
                             player.setCurrentRemoteView("suspect");
                             player.sendView();
                             break;
+                    }
+                    try {
+                        if (playerToken.getFlag("enteredRoom").equals(true)) {
+                            player.setFlag("currRoom", playerToken.getFlag("currRoom"));
+                            playerToken.setFlag("enteredRoom", false);
+                            player.setCurrentRemoteView("room");
+                            player.sendView();
+                        }
+                    } catch (Exception e) {
+                        playerToken.setFlag("enteredRoom", false);
+                        e.printStackTrace();
                     }
 
                     break;

@@ -8,7 +8,9 @@ function RadioButton(x, y, width, height, lineWidth = 5) {
 	this.lineWidth = lineWidth;
 	
 	this.setChecked = function(state) {
-		this.checked = state;
+		if (this.enabled) {
+			this.checked = state;
+		}
 	}
 	
 	this.renderComponent = function(ctx) {

@@ -16,29 +16,35 @@ Suggestion view:
 Lists only cards the player has.
 If none, a none button will appear
 
+Entered room:
+Exit room
+Suggest
+Accuse
+
+
 Win condition:
 accusation was correct
 
 
 Game loop:
 Player turn
-in room:
-	Move outside room: see outside room
-	guess: > Guess/Accuse View
-		Back button < Main Controller View
-		Pick suspect/weapon
-			Other players: > Suggestion view
-				Choose whichever card
-				< Main Controller View
-			Show player which card was given back, or none
-		< Main Controller View
-	Accuse: > Guess/Accuse View
-		Back Button < Main Controller View
-		Pick suspect/weapon/room
-			View actual case. If win, good. If not, bad.
-		< Main Controller View
+
 	
 outside room:
 	Roll die
 	Move up to that many spaces
-	Can enter rooms through doors
+	Can enter rooms through doors: > Room View
+		Move outside room (NOT SAME TURN): < Main Controller
+		guess: > Guess/Accuse View
+			Back button < Room View
+			Pick suspect/weapon
+				Other players: > Suggestion view
+					Choose whichever card
+					< Main Controller View
+				Show player which card was given back, or none
+			< Main Controller View
+		Accuse: > Guess/Accuse View
+			Back Button < Room View
+			Pick suspect/weapon/room
+				View actual case. If win, good. If not, bad.
+			< Main Controller View

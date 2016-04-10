@@ -169,14 +169,17 @@ public class LevelLoader {
         player.addRemoteView(remoteView);
         remoteView = createSuspectView();
         player.addRemoteView(remoteView);
-        remoteView = createControllerView();
-        player.addRemoteView(remoteView);
         remoteView = createAccusationView();
+        player.addRemoteView(remoteView);
+        remoteView = createRoomView();
+        player.addRemoteView(remoteView);
+        remoteView = createControllerView();
         player.addRemoteView(remoteView);
         player.setCurrentRemoteView(remoteView.getId());
         player.setFlag("suspect return", "main");
 
         Token token = new Token(0, 0, 15, 15);
+        token.setFlag("enteredRoom", false);
         BGComponent tile = null;
         switch (playerNumber) {
             case 0:
@@ -241,13 +244,41 @@ public class LevelLoader {
         return player;
     }
 
+    private static BGContainer createRoomView() {
+        BGContainer remoteView = new BGContainer();
+        remoteView.setId("room");
+
+        Label title = new Label(180, 10, "Clue");
+        title.setFont(title.getFont().deriveFont(60.0f));
+        remoteView.add(title);
+
+        Button accuse = new Button(50, 300, 150, 60, "Accuse");
+        accuse.setId("accuse");
+        remoteView.add(accuse);
+
+        Button suggest = new Button(280, 300, 150, 60, "Suggest");
+        suggest.setId("suggest");
+        remoteView.add(suggest);
+
+        Button exit = new Button(165, 450, 150, 60, "Exit room");
+        exit.setId("exit");
+        remoteView.add(exit);
+
+        return remoteView;
+    }
+
     private static BGContainer createAccusationView() {
         BGContainer remoteView = createSuspectView();
         remoteView.setId("accusation");
         remoteView.remove("return");
 
-        Button ret = new Button(250, 580, 150, 50, "Submit");
-        ret.setId("submit");
+        Button submit = new Button(250, 540, 150, 50, "Submit");
+        submit.setId("submit");
+        submit.setFont(submit.getFont().deriveFont(30.0f));
+        remoteView.add(submit);
+
+        Button ret = new Button(250, 630, 150, 50, "Back");
+        ret.setId("return");
         ret.setFont(ret.getFont().deriveFont(30.0f));
         remoteView.add(ret);
 
@@ -302,7 +333,7 @@ public class LevelLoader {
 
         String[] suspects = {"Mr. Green", "Colonel Mustard", "Ms. Peacock", "Prof. Plum", "Ms. Scarlet", "Ms. White"};
         String[] weapons = {"Candlestick", "Knife", "Lead Pipe", "Pistol", "Rope", "Wrench"};
-        String[] places = {"Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study"};
+        String[] places = {"Study", "Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library"};
 
         BGContainer suspectContainer = new BGContainer();
         suspectContainer.setId("suspects");
@@ -314,7 +345,7 @@ public class LevelLoader {
 
         for (int i = 0; i < suspects.length; i++) {
             RadioButton button = new RadioButton(10, 130 + 40*i, 40, 40, 2);
-            button.setId("checkbox-"+suspects[i]);
+            button.setId(suspects[i]);
             button.addFlag("group", "suspect");
             suspectContainer.add(button);
 
@@ -335,7 +366,7 @@ public class LevelLoader {
 
         for (int i = 0; i < weapons.length; i++) {
             RadioButton button = new RadioButton(10, 440 + 40*i, 40, 40, 2);
-            button.setId("checkbox-"+weapons[i]);
+            button.setId(weapons[i]);
             button.addFlag("group", "weapon");
             weaponContainer.add(button);
 
@@ -355,7 +386,7 @@ public class LevelLoader {
 
         for (int i = 0; i < places.length; i++) {
             RadioButton button = new RadioButton(250, 130 + 40*i, 40, 40, 2);
-            button.setId("checkbox-"+places[i]);
+            button.setId(places[i]);
             button.addFlag("group", "place");
             placeContainer.add(button);
 

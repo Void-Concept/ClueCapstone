@@ -75,7 +75,8 @@ public class Player extends BGContainer {
         remoteViewStates.remove(getRemoteView(id));
     }
     public void setCurrentRemoteView(String tag) {
-        currentView = tag;
+        if (getRemoteView(tag) != null)
+            currentView = tag;
     }
     public String getCurrentRemoteView() {
         return currentView;
