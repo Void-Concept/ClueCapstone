@@ -30,6 +30,7 @@ public class GameController extends GameState implements SocketListener {
     GamePacketHandler handler = new GamePacketHandler(this);
 
     private ArrayList<Player> players = new ArrayList<>();
+    private int playerTurn = 0;
 
     public GameController(GameStateManager gsm) {
         super(gsm);
@@ -42,6 +43,10 @@ public class GameController extends GameState implements SocketListener {
             }
         }
         return null;
+    }
+
+    public Player getPlayer(int index) {
+        return players.get(index);
     }
 
     public int playerCount() {
@@ -81,6 +86,7 @@ public class GameController extends GameState implements SocketListener {
         SocketEndpoint.setPacketHandler(handler);
 
         players.get(0).setMyTurn(true);
+        LevelLoader.changeTurn(this, 0);
         for (Player player : players) {
             try {
                 player.sendView();
@@ -90,6 +96,16 @@ public class GameController extends GameState implements SocketListener {
         }
 
         SocketEndpoint.setListener(this);
+    }
+
+    public void nextTurn() {
+        players.get(playerTurn).setMyTurn(false);
+        players.get(playerTurn).sendView();
+        playerTurn = (playerTurn + 1) % playerCount();
+        players.get(playerTurn).setMyTurn(true);
+        players.get(playerTurn).sendView();
+
+        LevelLoader.changeTurn(this, playerTurn);
     }
 
     @Override
@@ -156,7 +172,7 @@ public class GameController extends GameState implements SocketListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        gui.mouseClicked(e);
+        nextTurn(); gui.mouseClicked(e);
     }
 
     @Override

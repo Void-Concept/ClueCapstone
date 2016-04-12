@@ -464,9 +464,14 @@ public class GamePacketHandler implements PacketHandler {
                             break;
                     }
                     try {
+                        int newRange = (Integer)player.getFlag("walkRange") - 1;
+                        player.setFlag("walkRange", newRange);
+                        ((Label)controller.getViewById("moves")).setText("Moves left: " + newRange);
                         if (playerToken.getFlag("enteredRoom").equals(true)) {
                             moveIntoRoom(player);
                             transitionToRoom(player);
+                        } else if (newRange <= 0) {
+                            controller.nextTurn();
                         }
                     } catch (Exception e) {
                         playerToken.setFlag("enteredRoom", false);

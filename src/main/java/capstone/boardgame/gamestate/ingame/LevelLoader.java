@@ -64,13 +64,19 @@ public class LevelLoader {
         drawables.add(label);
 
         Dice die = new Dice(200, 200, 60, 60, 6);
+        die.setId("walk range");
         die.roll();
         die.setBackgroundColor(Color.blue);
         die.setColor(Color.white);
         drawables.add(die);
 
-        Button turn = new Button(530, 10, 220, 40, "Colonel Mustard's Turn");
-        turn.setBackgroundColor(Color.yellow);
+        Label range = new Label(800, 20, "Moves left: 0");
+        range.setId("moves");
+        drawables.add(range);
+
+        Button turn = new Button(530, 10, 220, 40, "Prof. Plum's Turn");
+        turn.setId("current turn");
+        turn.setBackgroundColor(Color.magenta);
         turn.setColor(Color.black);
         drawables.add(turn);
 
@@ -550,5 +556,53 @@ public class LevelLoader {
 
         remoteView.add(controls);
         return remoteView;
+    }
+
+    public static void changeTurn(GameController controller, int playerNum) {
+        Button currTurn = (Button) controller.getViewById("current turn");
+        Player player = controller.getPlayer(playerNum);
+        Dice die = (Dice)controller.getViewById("walk range");
+        die.roll();
+        player.setFlag("walkRange", die.getLast());
+        ((Label)controller.getViewById("moves")).setText("Moves left: " + player.getFlag("walkRange"));
+
+        switch (playerNum) {
+            case 0:
+                currTurn.setText("Prof. Plum's Turn");
+                currTurn.setBackgroundColor(Color.magenta);
+                currTurn.setColor(Color.black);
+                Log.d(tag, "Prof. Plum");
+                break;
+            case 1:
+                currTurn.setText("Ms. Scarlett's Turn");
+                currTurn.setBackgroundColor(Color.red);
+                currTurn.setColor(Color.black);
+                Log.d(tag, "Ms. Scarlett");
+                break;
+            case 2:
+                currTurn.setText("Colonel Mustard's Turn");
+                currTurn.setBackgroundColor(Color.yellow);
+                currTurn.setColor(Color.black);
+                Log.d(tag, "Colonel Mustard");
+                break;
+            case 3:
+                currTurn.setText("Mrs. White's Turn");
+                currTurn.setBackgroundColor(Color.white);
+                currTurn.setColor(Color.black);
+                Log.d(tag, "Mrs. White");
+                break;
+            case 4:
+                currTurn.setText("Mr. Green's Turn");
+                currTurn.setBackgroundColor(Color.green);
+                currTurn.setColor(Color.black);
+                Log.d(tag, "Mr. Green");
+                break;
+            case 5:
+                currTurn.setText("Ms. Peacock's Turn");
+                currTurn.setBackgroundColor(Color.blue);
+                currTurn.setColor(Color.white);
+                Log.d(tag, "Ms. Peacock");
+                break;
+        }
     }
 }
