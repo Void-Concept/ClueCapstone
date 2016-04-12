@@ -74,6 +74,7 @@ public class GamePacketHandler implements PacketHandler {
     private void transitionToRoom(Player player) {
         String room = (String) player.getFlag("currRoom");
         BGContainer remoteView = player.getRemoteView("room");
+        player.getRemoteView("room").getViewByID("exit").setVisibility(false); //will be set visible on next turn
         player.getViewByID("player").setFlag("enteredRoom", false);
 
         switch (room) {

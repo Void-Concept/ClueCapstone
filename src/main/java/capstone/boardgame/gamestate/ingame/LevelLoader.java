@@ -566,6 +566,8 @@ public class LevelLoader {
         player.setFlag("walkRange", die.getLast());
         ((Label)controller.getViewById("moves")).setText("Moves left: " + player.getFlag("walkRange"));
 
+        player.getRemoteView("room").getViewByID("exit").setVisibility(true);
+
         switch (playerNum) {
             case 0:
                 currTurn.setText("Prof. Plum's Turn");
