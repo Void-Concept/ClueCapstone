@@ -1,5 +1,6 @@
 package capstone.boardgame.gamestate.ingame;
 
+import capstone.boardgame.GUI.BGContainer;
 import capstone.boardgame.GUI.Component.BGComponent;
 import capstone.boardgame.GUI.Component.Label;
 import capstone.boardgame.GUI.Component.Token;
@@ -43,6 +44,10 @@ public class GameController extends GameState implements SocketListener {
         return null;
     }
 
+    public int playerCount() {
+        return players.size();
+    }
+
     public BGComponent getViewById(String id) {
         return gui.getViewByID(id);
     }
@@ -64,14 +69,23 @@ public class GameController extends GameState implements SocketListener {
             number++;
         }
 
+        //set up NPC objects
+        BGContainer npcs = new BGContainer();
+        npcs.setId("npcs");
+        gui.add(npcs);
+        for (;number < 6; number++) {
+            npcs.add(LevelLoader.setupNPC(number, gui));
+        }
+
         //set up packet handler
         SocketEndpoint.setPacketHandler(handler);
 
+        players.get(0).setMyTurn(true);
         for (Player player : players) {
             try {
                 player.sendView();
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
 

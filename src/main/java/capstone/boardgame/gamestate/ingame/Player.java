@@ -25,7 +25,9 @@ public class Player extends BGContainer {
     public boolean enabled = true;
 
     private ArrayList<BGContainer> remoteViewStates = new ArrayList<>();
-    private String currentView = "old";
+    private String currentView = "main";
+    private String notTurnView = "main";
+    private boolean myTurn = false;
     private Color viewBackground = Color.gray;
 
     public Player(String pid, Session session) {
@@ -58,7 +60,8 @@ public class Player extends BGContainer {
         try {
             Packet packet = new Packet();
             packet.setCommand("draw");
-            packet.addParameters(getRemoteView(currentView).toJson());
+            String viewToSend = myTurn ? currentView : notTurnView;
+            packet.addParameters(getRemoteView(viewToSend).toJson());
 
             sendPacket(packet);
         } catch (Exception e) {
@@ -74,19 +77,45 @@ public class Player extends BGContainer {
     public void removeRemoteView(String id) {
         remoteViewStates.remove(getRemoteView(id));
     }
+
     public void setCurrentRemoteView(String tag) {
         if (getRemoteView(tag) != null)
             currentView = tag;
     }
+    public String getCurrentVisibleView() {
+        if (isTurn()) {
+            return currentView;
+        } else {
+            return notTurnView;
+        }
+    }
+
     public String getCurrentRemoteView() {
         return currentView;
     }
+
     public void setRemoteViewBackground(Color color) {
         this.viewBackground = color;
     }
     public Color getRemoteViewBackground() {
         return this.viewBackground;
     }
+
+    public String getNotTurnViewView() {
+        return notTurnView;
+    }
+    public void setNotTurnView(String tag) {
+        if (getRemoteView(tag) != null)
+            notTurnView = tag;
+    }
+
+    public void setMyTurn(boolean turn) {
+        myTurn = turn;
+    }
+    public boolean isTurn() {
+        return myTurn;
+    }
+
 
     public BGContainer getRemoteView(String id) {
         for (BGContainer container : remoteViewStates) {

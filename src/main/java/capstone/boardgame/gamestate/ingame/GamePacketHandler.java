@@ -1,8 +1,7 @@
 package capstone.boardgame.gamestate.ingame;
 
 import capstone.boardgame.GUI.BGContainer;
-import capstone.boardgame.GUI.Component.BGComponent;
-import capstone.boardgame.GUI.Component.RadioButton;
+import capstone.boardgame.GUI.Component.*;
 import capstone.boardgame.GUI.Drawable.BGDrawable;
 import capstone.boardgame.HTTP.WebSocket.PacketHandler;
 import capstone.boardgame.main.Log;
@@ -23,17 +22,18 @@ public class GamePacketHandler implements PacketHandler {
     }
 
     private void movePlayer(BGComponent player, BGContainer board, int xoff, int yoff) {
-        BGComponent moveTile = board.findViewsWithFlag("tilex", (Integer)player.getFlag("tilex") + xoff).findViewWithFlag("tiley", (Integer)player.getFlag("tiley") + yoff);
+        BGComponent moveTile = board.findViewsWithFlag("tilex", (Integer) player.getFlag("tilex") + xoff).findViewWithFlag("tiley", (Integer) player.getFlag("tiley") + yoff);
 
-        player.setX(moveTile.getX() + moveTile.getWidth() / 2 - player.getWidth() / 2 + (Integer)player.getFlag("xoff"));
-        player.setY(moveTile.getY() + moveTile.getHeight() / 2 - player.getHeight() / 2 + (Integer)player.getFlag("yoff"));
+        player.setX(moveTile.getX() + moveTile.getWidth() / 2 - player.getWidth() / 2 + (Integer) player.getFlag("xoff"));
+        player.setY(moveTile.getY() + moveTile.getHeight() / 2 - player.getHeight() / 2 + (Integer) player.getFlag("yoff"));
 
         player.setFlag("tilex", moveTile.getFlag("tilex"));
         player.setFlag("tiley", moveTile.getFlag("tiley"));
 
         if (moveTile.getFlag("isdoor").equals(true)) {
             String[] places = {"Study", "Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library"};
-            player.setFlag("currRoom", places[(Integer)moveTile.getFlag("room") - 1]);
+            player.setFlag("currRoom", places[(Integer) moveTile.getFlag("room") - 1]);
+            player.setFlag("currRoomVal", moveTile.getFlag("room"));
             player.setFlag("enteredRoom", true);
         }
     }
@@ -42,11 +42,11 @@ public class GamePacketHandler implements PacketHandler {
     public void handlePacket(Session session, String packet) {
         JSONObject obj = new JSONObject(packet);
         String command = (String) obj.get("Command");
-        JSONArray params = (JSONArray)obj.get("Parameters");
+        JSONArray params = (JSONArray) obj.get("Parameters");
 
         Player player = controller.getPlayerSession(session.getId());
 
-        switch (player.getCurrentRemoteView()) {
+        switch (player.getCurrentVisibleView()) {
             case "old":
                 handleOldPacket(command, params, player);
                 break;
@@ -62,12 +62,19 @@ public class GamePacketHandler implements PacketHandler {
             case "room":
                 handleRoomPacket(command, params, player);
                 break;
+            case "choice":
+                handleChoicePacket(command, params, player);
+                break;
+            case "not turn":
+                handleNotTurnPacket(command, params, player);
+                break;
         }
     }
 
     private void transitionToRoom(Player player) {
-        String room = (String)player.getFlag("currRoom");
+        String room = (String) player.getFlag("currRoom");
         BGContainer remoteView = player.getRemoteView("room");
+        player.getViewByID("player").setFlag("enteredRoom", false);
 
         switch (room) {
             case "Study":
@@ -86,8 +93,87 @@ public class GamePacketHandler implements PacketHandler {
         player.sendView();
     }
 
+    private void gotoChoiceView(Player player, String[] choices, String handleTag, String descript) {
+        BGContainer choiceView = player.getRemoteView("choice");
+        player.setFlag("handler", handleTag);
+        BGContainer choiceList = (BGContainer) choiceView.getViewByID("choices");
+        choiceList.clear();
+
+        Button description = (Button) choiceView.getViewByID("decription");
+        description.setText(descript);
+
+        String choice;
+        Button btn;
+        for (int i = 0; i < choices.length; i++) {
+            choice = choices[i];
+
+            btn = new Button(140, 270 + 60 * i, 200, 50, choice);
+            btn.setId(choice);
+            choiceList.add(btn);
+        }
+
+        player.setCurrentRemoteView("choice");
+        player.sendView();
+    }
+    private void handleNotTurnPacket(String command, JSONArray params, Player player) {
+        try {
+            switch (command) {
+                case "onClick":
+                    String button = ((JSONObject)params.get(0)).get("view").toString();
+                    switch (button) {
+                        case "view suspects":
+                            Log.d(tag, "Setting view");
+                            player.setFlag("suspect return", "not turn");
+                            player.setNotTurnView("suspect");
+                            player.sendView();
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleChoicePacket(String command, JSONArray params, Player player) {
+        try {
+            switch ((String)player.getFlag("handler")) {
+                case "exit room":
+                    switch (command) {
+                        case "onClick":
+                            String button = ((JSONObject)params.get(0)).get("view").toString();
+                            switch (button) {
+                                case "Next Door":
+                                    BGContainer board = (BGContainer)controller.getViewById("board");
+                                    BGContainer doors = board.findViewsWithFlag("room", player.getFlag("currRoomVal"));
+
+                                    int index = ((Integer)player.getFlag("exiting room") + 1) % doors.size();
+                                    Log.d(tag, "Going to index " + index);
+                                    BGComponent door = doors.get(index);
+                                    player.setFlag("exiting room", index);
+
+                                    BGComponent playerToken = player.getViewByID("player");
+                                    playerToken.setFlag("tilex", door.getFlag("tilex"));
+                                    playerToken.setFlag("tiley", door.getFlag("tiley"));
+                                    movePlayer(playerToken, board, 0, 0);
+                                    break;
+                                case "Exit":
+                                    player.getViewByID("player").setFlag("enteredRoom", false);
+                                    player.setCurrentRemoteView("main");
+                                    player.sendView();
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleRoomPacket(String command, JSONArray params, Player player) {
         try {
+            BGComponent playerToken = player.getViewByID("player");
             switch (command) {
                 case "onClick":
                     String button = ((JSONObject)params.get(0)).get("view").toString();
@@ -99,12 +185,47 @@ public class GamePacketHandler implements PacketHandler {
                         case "suggest":
                             transitionToAccusation(player, false);
                             break;
-                        case "exit":
-                            player.setCurrentRemoteView("main");
+                        case "view suspects":
+                            player.setFlag("suspect return", "room");
+                            player.setCurrentRemoteView("suspect");
                             player.sendView();
+                            break;
+                        case "exit":
+                            BGContainer board = (BGContainer)controller.getViewById("board");
+                            BGContainer doors = board.findViewsWithFlag("room", player.getFlag("currRoomVal"));
+
+                            BGComponent door = doors.get(0);
+                            player.setFlag("exiting room", 0);
+
+
+                            playerToken.setFlag("tilex", door.getFlag("tilex"));
+                            playerToken.setFlag("tiley", door.getFlag("tiley"));
+                            movePlayer(playerToken, board, 0, 0);
+
+                            gotoChoiceView(player, new String[]{"Next Door", "Exit"}, "exit room", "Choose a door to exit from");
                             break;
                         case "secret passage":
                             Log.d(tag, "TODO: secret passage");
+                            String[] places = {"Study", "Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library"};
+                            switch ((String)player.getFlag("currRoom")) {
+                                case "Study":
+                                    playerToken.setFlag("currRoom", places[4]);
+                                    playerToken.setFlag("currRoomVal", 5);
+                                    break;
+                                case "Lounge":
+                                    playerToken.setFlag("currRoom", places[6]);
+                                    playerToken.setFlag("currRoomVal", 7);
+                                    break;
+                                case "Kitchen":
+                                    playerToken.setFlag("currRoom", places[0]);
+                                    playerToken.setFlag("currRoomVal", 1);
+                                    break;
+                                case "Conservatory":
+                                    playerToken.setFlag("currRoom", places[2]);
+                                    playerToken.setFlag("currRoomVal", 3);
+                                    break;
+                            }
+                            moveIntoRoom(player);
                             break;
                     }
 
@@ -120,6 +241,17 @@ public class GamePacketHandler implements PacketHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private int getIndex(String[] coll, String val) {
+        int i = 0;
+        for (String str : coll) {
+            if (str.equals(val)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
     }
 
     //parameter: true if accusing, false if suggesting
@@ -262,7 +394,11 @@ public class GamePacketHandler implements PacketHandler {
 
                     switch (button) {
                         case "return":
-                            player.setCurrentRemoteView((String)player.getFlag("suspect return"));
+                            if (player.isTurn()) {
+                                player.setCurrentRemoteView((String) player.getFlag("suspect return"));
+                            } else {
+                                player.setNotTurnView((String) player.getFlag("suspect return"));
+                            }
                             player.sendView();
                             break;
                     }
@@ -271,7 +407,7 @@ public class GamePacketHandler implements PacketHandler {
                 case "radioToggle":
                     Log.d(tag, "TODO: radioToggle");
                     try {
-                        BGContainer remoteView = player.getRemoteView(player.getCurrentRemoteView());
+                        BGContainer remoteView = player.getRemoteView(player.getCurrentVisibleView());
                         JSONObject radioParams = (JSONObject)params.get(0);
                         String radioButton = radioParams.get("view").toString();
                         String state = radioParams.get("state").toString();
@@ -329,8 +465,7 @@ public class GamePacketHandler implements PacketHandler {
                     }
                     try {
                         if (playerToken.getFlag("enteredRoom").equals(true)) {
-                            player.setFlag("currRoom", playerToken.getFlag("currRoom"));
-                            playerToken.setFlag("enteredRoom", false);
+                            moveIntoRoom(player);
                             transitionToRoom(player);
                         }
                     } catch (Exception e) {
@@ -350,6 +485,17 @@ public class GamePacketHandler implements PacketHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void moveIntoRoom(Player player) {
+        BGComponent playerToken = player.getViewByID("player");
+        player.setFlag("currRoom", playerToken.getFlag("currRoom"));
+        player.setFlag("currRoomVal", playerToken.getFlag("currRoomVal"));
+        playerToken.setFlag("enteredRoom", false);
+        BGContainer room = (BGContainer)controller.getViewById("Room " + player.getFlag("currRoom"));
+        BGComponent inRoom = room.findViewWithFlag("suspect", playerToken.getFlag("suspect"));
+        playerToken.setX(inRoom.getX());
+        playerToken.setY(inRoom.getY());
     }
 
     private void handleOldPacket(String command, JSONArray params, Player player) {

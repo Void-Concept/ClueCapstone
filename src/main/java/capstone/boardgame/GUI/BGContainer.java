@@ -31,6 +31,7 @@ public class BGContainer extends BGComponent {
     public boolean remove(String id){
         return remove(getViewByID(id));
     }
+    public void clear() { drawables.clear(); }
 
     public BGComponent getViewByID(String id) {
         BGComponent found = null;
