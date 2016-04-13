@@ -85,6 +85,8 @@ public class GameController extends GameState implements SocketListener {
         //set up packet handler
         SocketEndpoint.setPacketHandler(handler);
 
+        LevelLoader.finishSetup(this);
+
         players.get(0).setMyTurn(true);
         LevelLoader.changeTurn(this, 0);
         for (Player player : players) {

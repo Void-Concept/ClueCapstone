@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Random;
 
 /**
  * Created by Kyle on 3/23/2016.
@@ -28,7 +29,9 @@ import java.util.InputMismatchException;
 public class LevelLoader {
     private static final String tag = "LevelLoader";
 
-    public static final String[] suspects = {"Mr. Green", "Colonel Mustard", "Ms. Peacock", "Prof. Plum", "Ms. Scarlet", "Ms. White"};
+
+    public static final String[] suspects = {"Prof. Plum", "Ms. Scarlet", "Colonel Mustard", "Ms. White", "Mr. Green", "Ms. Peacock"};
+//    public static final String[] suspects = {"Mr. Green", "Colonel Mustard", "Ms. Peacock", "Prof. Plum", "Ms. Scarlet", "Ms. White"};
     public static final String[] weapons = {"Candlestick", "Knife", "Lead Pipe", "Pistol", "Rope", "Wrench"};
     public static final String[] places = {"Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study"};
 
@@ -104,6 +107,7 @@ public class LevelLoader {
             xOff = ((i % 3)) * 50 - 25 + xoffoff;
             yOff = ((i % 2)) * 50 - 20;
             tile = new Tile(x + xOff, y + yOff, 0, 0, null);
+            tile.setVisibility(false);
             tile.addFlag("room", room);
             tile.addFlag("suspect", suspects[i]);
             area.add(tile);
@@ -239,6 +243,7 @@ public class LevelLoader {
     }
 
     public static Player setupPlayer(int playerNumber, Session session, BGContainer gui) {
+
         Player player = new Player(session.getId(), session);
         BGContainer board = (BGContainer)gui.getViewByID("board");
 
@@ -427,6 +432,7 @@ public class LevelLoader {
             RadioButton button = new RadioButton(10, 130 + 40*i, 40, 40, 2);
             button.setId(suspects[i]);
             button.addFlag("group", "suspect");
+            button.setFlag("hasCard", false);
             suspectContainer.add(button);
 
             Label aLabel = new Label(55, 140 + 40*i, suspects[i]);
@@ -605,6 +611,77 @@ public class LevelLoader {
                 currTurn.setColor(Color.white);
                 Log.d(tag, "Ms. Peacock");
                 break;
+        }
+    }
+
+    public static void finishSetup(GameController controller) {
+        //deal cards randomly
+        Random random = new Random(System.currentTimeMillis());
+
+        int usedCards = 0, card;
+        int totalCards = suspects.length + weapons.length + places.length ; //all except used cards
+        boolean[] usedCard = new boolean[totalCards+3];
+
+        //get one of each card
+        card = random.nextInt(suspects.length);
+        usedCard[card] = true;
+        controller.gui.setFlag("final suspect", suspects[card]);
+        Log.d("final suspect", suspects[card]);
+
+        card = random.nextInt(weapons.length);
+        usedCard[card+suspects.length] = true;
+        controller.gui.setFlag("final weapon", weapons[card]);
+        Log.d("final weapon", weapons[card]);
+
+        card = random.nextInt(places.length);
+        usedCard[card+suspects.length+weapons.length] = true;
+        controller.gui.setFlag("final place", places[card]);
+        Log.d("final place", places[card]);
+
+        while (usedCards < totalCards-3) {
+            for (int i = 0; i < controller.playerCount() && usedCards < totalCards-3; i++) {
+                Player player = controller.getPlayer(i);
+                BGContainer suspectView = player.getRemoteView("suspect");
+
+                //while the next random card hasn't been used
+                while ( usedCard[(card = random.nextInt(totalCards))] );
+                usedCard[card] = true;
+
+                if (card < suspects.length) {
+                    //is suspect
+                    BGContainer suspectList = suspectView.findViewsWithFlag("group", "suspect");
+                    RadioButton rb = (RadioButton)suspectList.get(card);
+                    rb.setChecked(true);
+                    rb.setEnabled(false);
+                    rb.setBackgroundColor(Color.black);
+                    rb.setColor(Color.black);
+                    rb.setFlag("hasCard", true);
+
+                    Log.d(tag, "Giving player " + suspects[i] + " card " + suspects[card]);
+                } else if (card < suspects.length + weapons.length) {
+                    //is weapon
+                    BGContainer suspectList = suspectView.findViewsWithFlag("group", "weapon");
+                    RadioButton rb = (RadioButton)suspectList.get(card-suspects.length);
+                    rb.setChecked(true);
+                    rb.setEnabled(false);
+                    rb.setBackgroundColor(Color.black);
+                    rb.setColor(Color.black);
+                    rb.setFlag("hasCard", true);
+                    Log.d(tag, "Giving player " + suspects[i] + " card " + weapons[card-suspects.length]);
+                } else {
+                    //is place
+                    BGContainer suspectList = suspectView.findViewsWithFlag("group", "place");
+                    RadioButton rb = (RadioButton)suspectList.get(card-suspects.length-weapons.length);
+                    rb.setChecked(true);
+                    rb.setEnabled(false);
+                    rb.setBackgroundColor(Color.black);
+                    rb.setColor(Color.black);
+                    rb.setFlag("hasCard", true);
+                    Log.d(tag, "Giving player " + suspects[i] + " card " + places[card-weapons.length-suspects.length]);
+                }
+
+                usedCards++;
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ public class MenuPacketHandler implements PacketHandler {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }
