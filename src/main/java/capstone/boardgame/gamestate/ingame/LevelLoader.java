@@ -183,7 +183,7 @@ public class LevelLoader {
                 tile = board.findViewWithFlag("person", 6);
                 token.addFlag("xoff", -3);
                 token.addFlag("yoff", 3);
-                token.addFlag("suspect", suspects[3]);
+                token.addFlag("suspect", suspects[0]);
                 token.setColor(Color.magenta);
                 Log.d(tag, "Prof. Plum");
                 break;
@@ -191,7 +191,7 @@ public class LevelLoader {
                 tile = board.findViewWithFlag("person", 1);
                 token.addFlag("xoff", 3);
                 token.addFlag("yoff", 3);
-                token.addFlag("suspect", suspects[4]);
+                token.addFlag("suspect", suspects[1]);
                 token.setColor(Color.red);
                 Log.d(tag, "Ms. Scarlett");
                 break;
@@ -199,7 +199,7 @@ public class LevelLoader {
                 tile = board.findViewWithFlag("person", 2);
                 token.addFlag("xoff", 0);
                 token.addFlag("yoff", 4);
-                token.addFlag("suspect", suspects[1]);
+                token.addFlag("suspect", suspects[2]);
                 token.setColor(Color.yellow);
                 Log.d(tag, "Colonel Mustard");
                 break;
@@ -207,7 +207,7 @@ public class LevelLoader {
                 tile = board.findViewWithFlag("person", 3);
                 token.addFlag("xoff", 3);
                 token.addFlag("yoff", -3);
-                token.addFlag("suspect", suspects[5]);
+                token.addFlag("suspect", suspects[3]);
                 token.setColor(Color.white);
                 Log.d(tag, "Mrs. White");
                 break;
@@ -215,7 +215,7 @@ public class LevelLoader {
                 tile = board.findViewWithFlag("person", 4);
                 token.addFlag("xoff", -3);
                 token.addFlag("yoff", -3);
-                token.addFlag("suspect", suspects[0]);
+                token.addFlag("suspect", suspects[4]);
                 token.setColor(Color.green);
                 Log.d(tag, "Mr. Green");
                 break;
@@ -223,7 +223,7 @@ public class LevelLoader {
                 tile = board.findViewWithFlag("person", 5);
                 token.addFlag("xoff", 0);
                 token.addFlag("yoff", -4);
-                token.addFlag("suspect", suspects[2]);
+                token.addFlag("suspect", suspects[5]);
                 token.setColor(Color.blue);
                 Log.d(tag, "Ms. Peacock");
                 break;

@@ -273,6 +273,7 @@ public class GamePacketHandler implements PacketHandler {
                             break;
                         case "secret passage":
                             String[] places = {"Study", "Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library"};
+
                             switch ((String)player.getFlag("currRoom")) {
                                 case "Study":
                                     playerToken.setFlag("currRoom", places[4]);
@@ -291,6 +292,7 @@ public class GamePacketHandler implements PacketHandler {
                                     playerToken.setFlag("currRoomVal", 3);
                                     break;
                             }
+
                             moveIntoRoom(player);
                             break;
                     }
@@ -505,6 +507,33 @@ public class GamePacketHandler implements PacketHandler {
         sendNotTurnView(player, "choice");
     }
 
+    private void teleportAccusedPlayer() {
+        Player currPlayer = controller.getPlayer(controller.getCurrentTurn());
+        String suspect = (String)currPlayer.getFlag("accuse-suspect"),
+                place = (String)currPlayer.getFlag("accuse-place");
+
+        String[] places = {"Study", "Hall", "Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library"};
+
+        //finding player
+        Player search;
+        for (int i = 0; i < controller.playerCount(); i++) {
+            search = controller.getPlayer(i);
+            Log.d(tag, (String)search.getViewByID("player").getFlag("suspect"));
+            if (suspect.equals(search.getViewByID("player").getFlag("suspect"))) {
+                Log.d(tag, "TODO: put player in room");
+                BGComponent token = search.getViewByID("player");
+                token.setFlag("currRoom", place);
+                token.setFlag("currRoomVal", getIndex(places, place) + 1);
+                search.setCurrentRemoteView("room");
+                moveIntoRoom(search);
+                transitionToRoom(search);
+                return;
+            }
+        }
+
+        controller.gui.findViewsWithFlag("suspect", suspect);
+    }
+
     private void handleAccusationPacket(String command, JSONArray params, Player player) {
         try {
             switch (command) {
@@ -534,6 +563,8 @@ public class GamePacketHandler implements PacketHandler {
                             resetCheckboxes(group);
                             group = remoteView.findViewsWithFlag("group", "place");
                             resetCheckboxes(group);
+
+                            teleportAccusedPlayer();
 
                             if ((Boolean)player.getFlag("isAccusing")) {
                                 checkCaseFolder(player);
