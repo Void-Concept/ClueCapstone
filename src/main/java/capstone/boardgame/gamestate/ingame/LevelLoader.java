@@ -334,23 +334,29 @@ public class LevelLoader {
         title.setFont(title.getFont().deriveFont(60.0f));
         remoteView.add(title);
 
-        Button suggest = new Button(50, 300, 150, 60, "Suggest");
+        Button suggest = new Button(20, 200, 200, 90, "Suggest");
+        suggest.setFont(suggest.getFont().deriveFont(30.0f));
         suggest.setId("suggest");
         remoteView.add(suggest);
 
-        Button accuse = new Button(50, 450, 150, 60, "Accuse");
-        accuse.setId("accuse");
-        remoteView.add(accuse);
-
-        Button sheet = new Button(280, 300, 150, 60, "Suspect Sheet");
+        Button sheet = new Button(260, 200, 200, 90, "Suspect Sheet");
+        sheet.setFont(sheet.getFont().deriveFont(30.0f));
         sheet.setId("view suspects");
         remoteView.add(sheet);
 
-        Button exit = new Button(280, 450, 150, 60, "Exit room");
+        Button accuse = new Button(20, 400, 200, 90, "Accuse");
+        accuse.setFont(accuse.getFont().deriveFont(30.0f));
+        accuse.setId("accuse");
+        remoteView.add(accuse);
+
+
+        Button exit = new Button(260, 400, 200, 90, "Exit room");
+        exit.setFont(exit.getFont().deriveFont(30.0f));
         exit.setId("exit");
         remoteView.add(exit);
 
-        Button passage = new Button(165, 600, 150, 60, "Secret Passage");
+        Button passage = new Button(130, 600, 220, 90, "Secret Passage");
+        passage.setFont(passage.getFont().deriveFont(30.0f));
         passage.setId("secret passage");
         remoteView.add(passage);
         passage.setVisibility(false);
@@ -579,6 +585,8 @@ public class LevelLoader {
 
         Dice die = (Dice)controller.getViewById("walk range");
         die.roll();
+        die.setBackgroundColor(Color.white);
+        die.setColor(Color.black);
         player.setFlag("walkRange", die.getLast());
         ((Label)controller.getViewById("moves")).setText("Moves left: " + player.getFlag("walkRange"));
 

@@ -110,7 +110,7 @@ public class GamePacketHandler implements PacketHandler {
         for (int i = 0; i < choices.length; i++) {
             choice = choices[i];
 
-            btn = new Button(140, 270 + 60 * i, 200, 50, choice);
+            btn = new Button(115, 270 + 90 * i, 250, 70, choice);
             btn.setId(choice);
             choiceList.add(btn);
         }
