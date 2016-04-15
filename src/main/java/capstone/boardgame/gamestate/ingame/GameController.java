@@ -100,14 +100,23 @@ public class GameController extends GameState implements SocketListener {
         SocketEndpoint.setListener(this);
     }
 
+    public int getCurrentTurn() {
+        return playerTurn;
+    }
+    public int getNextPlayerNumber() {
+        return (playerTurn + 1) % playerCount();
+    }
+    public int getNextPlayerNumber(int number) {
+        return (number + 1) % playerCount();
+    }
+
     public void nextTurn() {
         players.get(playerTurn).setMyTurn(false);
         players.get(playerTurn).sendView();
-        playerTurn = (playerTurn + 1) % playerCount();
+        playerTurn = getNextPlayerNumber();
         LevelLoader.changeTurn(this, playerTurn);
         players.get(playerTurn).setMyTurn(true);
         players.get(playerTurn).sendView();
-
     }
 
     @Override

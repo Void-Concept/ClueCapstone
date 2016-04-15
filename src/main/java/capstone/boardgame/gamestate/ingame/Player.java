@@ -65,10 +65,10 @@ public class Player extends BGContainer {
 
             sendPacket(packet);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
-        Log.d("Player", getRemoteView(currentView).toJson().toString());
+        Log.d("Player", getPid() + ": " + getRemoteView(currentView).toJson().toString());
     }
 
     public void addRemoteView(BGContainer remoteView) {
