@@ -652,6 +652,7 @@ public class LevelLoader {
             for (int i = 0; i < controller.playerCount() && usedCards < totalCards-3; i++) {
                 Player player = controller.getPlayer(i);
                 BGContainer suspectView = player.getRemoteView("suspect");
+                BGContainer accuseView = player.getRemoteView("accusation");
 
                 //while the next random card hasn't been used
                 while ( usedCard[(card = random.nextInt(totalCards))] );
@@ -668,6 +669,10 @@ public class LevelLoader {
                     rb.setFlag("hasCard", true);
                     player.setFlag("card suspect " + suspects[card], true);
 
+                    RadioButton rb2 = (RadioButton)accuseView.findViewsWithFlag("group", "suspect").get(card);
+                    rb2.setBackgroundColor(Color.green);
+                    rb2.setFlag("hasCard", true);
+
                     Log.d(tag, "Giving player " + suspects[i] + " card " + suspects[card]);
                 } else if (card < suspects.length + weapons.length) {
                     //is weapon
@@ -680,6 +685,10 @@ public class LevelLoader {
                     rb.setFlag("hasCard", true);
                     player.setFlag("card weapon " + weapons[card-suspects.length], true);
 
+                    RadioButton rb2 = (RadioButton)accuseView.findViewsWithFlag("group", "weapon").get(card-suspects.length);
+                    rb2.setBackgroundColor(Color.green);
+                    rb2.setFlag("hasCard", true);
+
                     Log.d(tag, "Giving player " + suspects[i] + " card " + weapons[card-suspects.length]);
                 } else {
                     //is place
@@ -691,6 +700,10 @@ public class LevelLoader {
                     rb.setColor(Color.green);
                     rb.setFlag("hasCard", true);
                     player.setFlag("card place " + places[card-suspects.length-weapons.length], true);
+
+                    RadioButton rb2 = (RadioButton)accuseView.findViewsWithFlag("group", "place").get(card-suspects.length-weapons.length);
+                    rb2.setBackgroundColor(Color.green);
+                    rb2.setFlag("hasCard", true);
 
                     Log.d(tag, "Giving player " + suspects[i] + " card " + places[card-weapons.length-suspects.length]);
                 }

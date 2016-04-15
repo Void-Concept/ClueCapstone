@@ -134,7 +134,7 @@ public class GamePacketHandler implements PacketHandler {
                     switch (button) {
                         case "view suspects":
                             Log.d(tag, "Setting view");
-                            player.setFlag("suspect return", "not turn");
+                            player.setFlag("suspect return " + player.isTurn(), "not turn");
                             sendNotTurnView(player, "suspect");
                     }
                     break;
@@ -198,6 +198,10 @@ public class GamePacketHandler implements PacketHandler {
                             rb.setChecked(false);
                             rb.setEnabled(false);
 
+                            RadioButton rb2 = (RadioButton)currPlayer.getRemoteView("accusation").getViewByID(button);
+                            rb2.setFlag("seenCard", true);
+                            rb2.setBackgroundColor(Color.yellow);
+
                             gotoChoiceView(currPlayer, new String[]{button}, "rebuttal confirm", "You were shown");
                             sendCurrentView(currPlayer, "choice");
 
@@ -253,7 +257,7 @@ public class GamePacketHandler implements PacketHandler {
                             transitionToAccusation(player, false);
                             break;
                         case "view suspects":
-                            player.setFlag("suspect return", "room");
+                            player.setFlag("suspect return " + player.isTurn(), "room");
                             sendCurrentView(player, "suspect");
                             break;
                         case "exit":
@@ -531,7 +535,7 @@ public class GamePacketHandler implements PacketHandler {
             }
         }
 
-        controller.gui.findViewsWithFlag("suspect", suspect);
+        moveIntoRoom(controller.gui.findViewsWithFlag("suspect", suspect).findViewWithFlag("enteredRoom", false), place, suspect);
     }
 
     private void handleAccusationPacket(String command, JSONArray params, Player player) {
@@ -634,9 +638,9 @@ public class GamePacketHandler implements PacketHandler {
                     switch (button) {
                         case "return":
                             if (player.isTurn()) {
-                                sendCurrentView(player, (String) player.getFlag("suspect return"));
+                                sendCurrentView(player, (String) player.getFlag("suspect return " + player.isTurn()));
                             } else {
-                                sendNotTurnView(player, (String) player.getFlag("suspect return"));
+                                sendNotTurnView(player, (String) player.getFlag("suspect return " + player.isTurn()));
                             }
                             break;
                     }
@@ -699,7 +703,7 @@ public class GamePacketHandler implements PacketHandler {
                             }
                             break;
                         case "view suspects":
-                            player.setFlag("suspect return", "main");
+                            player.setFlag("suspect return " + player.isTurn(), "main");
                             sendCurrentView(player, "suspect");
                             break;
                     }
@@ -730,15 +734,20 @@ public class GamePacketHandler implements PacketHandler {
         }
     }
 
+    private void moveIntoRoom(BGComponent token, String roomID, String name) {
+        token.setFlag("enteredRoom", false);
+        BGContainer room = (BGContainer)controller.getViewById("Room " + roomID);
+        BGComponent inRoom = room.findViewWithFlag("suspect", name);
+        token.setX(inRoom.getX());
+        token.setY(inRoom.getY());
+    }
+
     private void moveIntoRoom(Player player) {
         BGComponent playerToken = player.getViewByID("player");
         player.setFlag("currRoom", playerToken.getFlag("currRoom"));
         player.setFlag("currRoomVal", playerToken.getFlag("currRoomVal"));
         playerToken.setFlag("enteredRoom", false);
-        BGContainer room = (BGContainer)controller.getViewById("Room " + player.getFlag("currRoom"));
-        BGComponent inRoom = room.findViewWithFlag("suspect", playerToken.getFlag("suspect"));
-        playerToken.setX(inRoom.getX());
-        playerToken.setY(inRoom.getY());
+        moveIntoRoom(playerToken, (String)player.getFlag("currRoom"), (String)playerToken.getFlag("suspect"));
     }
 
     private void handleOldPacket(String command, JSONArray params, Player player) {

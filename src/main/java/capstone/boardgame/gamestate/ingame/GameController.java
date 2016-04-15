@@ -183,7 +183,7 @@ public class GameController extends GameState implements SocketListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        nextTurn(); gui.mouseClicked(e);
+        gui.mouseClicked(e);
     }
 
     @Override
