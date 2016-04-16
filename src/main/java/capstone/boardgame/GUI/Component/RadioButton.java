@@ -55,9 +55,9 @@ public class RadioButton extends BGComponent {
         JSONObject obj = new JSONObject();
         obj.put("type","radiobutton");
 
-        obj.put("checked", checked);
+        obj.put("checked", checked ? 1 : 0);
         obj.put("lineWidth", lineWidth);
-        obj.put("enabled", enabled);
+        obj.put("enabled", enabled ? 1 : 0);
 
         return obj;
     }

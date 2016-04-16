@@ -269,7 +269,7 @@ public class LevelLoader {
 
         player.setCurrentRemoteView(remoteView.getId());
         player.setNotTurnView(notTurnView.getId());
-        player.setFlag("suspect return", "main");
+        player.setFlag("suspect return " + player.isTurn(), "main");
 
         Token token = setupToken(playerNumber, board);
         player.setRemoteViewBackground(token.getColor());

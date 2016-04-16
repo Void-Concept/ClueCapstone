@@ -1,11 +1,14 @@
-function RadioButton(x, y, width, height, lineWidth = 5) {
+function RadioButton(x, y, width, height, lineWidth) {
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
 	this.checked = false;
 	this.enabled = true;
-	this.lineWidth = lineWidth;
+	if (lineWidth = undefined)
+		this.lineWidth = 5;
+	else
+		this.lineWidth = lineWidth
 	
 	this.setChecked = function(state) {
 		if (this.enabled) {
