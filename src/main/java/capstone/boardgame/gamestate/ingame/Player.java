@@ -45,6 +45,7 @@ public class Player extends BGContainer {
     public void setSession(Session session) {
         this.session = session;
     }
+    public Session getSession() { return session; }
 
     @Override
     public void tick(double deltaTime) {

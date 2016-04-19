@@ -234,6 +234,9 @@ public class GamePacketHandler implements PacketHandler {
                     player.setCurrentRemoteView("room");
                     controller.nextTurn();
                     break;
+                case "player won":
+                    controller.endGame();
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -568,9 +571,23 @@ public class GamePacketHandler implements PacketHandler {
                             group = remoteView.findViewsWithFlag("group", "place");
                             resetCheckboxes(group);
 
+                            BGContainer accuseView = (BGContainer)controller.gui.getViewByID("accused");
+                            accuseView.setVisibility(true);
+
+                            boolean accusing = (Boolean)player.getFlag("isAccusing");
+                            ((Label)accuseView.getViewByID("accuse title")).setText(accusing ? "Accusing:" : "Suggesting:");
+
+                            String suspect = (String)player.getFlag("accuse-suspect"),
+                                    weapon = (String)player.getFlag("accuse-weapon"),
+                                    place = (String)player.getFlag("accuse-place");
+
+                            ((Label)accuseView.getViewByID("accuse suspect")).setText("Suspect: " + suspect);
+                            ((Label)accuseView.getViewByID("accuse weapon")).setText("Weapon: " + weapon);
+                            ((Label)accuseView.getViewByID("accuse place")).setText("Place: " + place);
+
                             teleportAccusedPlayer();
 
-                            if ((Boolean)player.getFlag("isAccusing")) {
+                            if (accusing) {
                                 checkCaseFolder(player);
                                 return;
                             }

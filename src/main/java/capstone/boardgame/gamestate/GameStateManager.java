@@ -33,6 +33,11 @@ public class GameStateManager implements MouseListener {
         states.peek().init();
     }
 
+    public void pop() {
+        states.pop();
+        states.peek().init();
+    }
+
     public void addPlayer(Session session) {
         sessions.addPlayer(session);
     }

@@ -39,14 +39,14 @@ public class LevelLoader {
         //ignore path for now
         ArrayList<BGComponent> drawables = new ArrayList<>();
 
+        SpriteSheet sheet = new SpriteSheet();
+        sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/spritesheet.png"));
+        drawables.add(createBoard(320, 80, 640, 640, sheet.getTile(0, 0, 8, 8)));
+
         SpriteSheet board = new SpriteSheet();
         board.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/boardbackground.png"));
         Tile boardBackground = new Tile(317, 77, 630, 631, board.getTile(0, 0, 194, 202));
         drawables.add(boardBackground);
-
-        SpriteSheet sheet = new SpriteSheet();
-        sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/spritesheet.png"));
-        drawables.add(createBoard(320, 80, 640, 640, sheet.getTile(0, 0, 8, 8)));
 
         Label label;
 
@@ -87,7 +87,33 @@ public class LevelLoader {
         players.setId("NumPlayers");
         players.setColor(Color.GREEN);
         drawables.add(players);
+
+        drawables.add(createBoardAccusation());
         return drawables;
+    }
+
+    private static BGContainer createBoardAccusation() {
+        BGContainer container = new BGContainer();
+        container.setId("accused");
+        container.setVisibility(false);
+
+        Label accuseTitle = new Label(1000, 100, "Accusing:");
+        accuseTitle.setId("accuse title");
+        container.add(accuseTitle);
+
+        Label accusePlayer = new Label(1000, 150, "Suspect: Colonel Mustard");
+        accusePlayer.setId("accuse suspect");
+        container.add(accusePlayer);
+
+        Label accuseWeapon = new Label(1000, 180, "Weapon: Candlestick");
+        accuseWeapon.setId("accuse weapon");
+        container.add(accuseWeapon);
+
+        Label accusePlace = new Label(1000, 210, "Place: Billards Room");
+        accusePlace.setId("accuse place");
+        container.add(accusePlace);
+
+        return container;
     }
 
     private static BGContainer createRoomDetails(int x, int y, String room) {
@@ -177,6 +203,7 @@ public class LevelLoader {
     private static Token setupToken(int number, BGContainer board) {
         Token token = new Token(0, 0, 15, 15);
         token.setFlag("enteredRoom", false);
+        token.applyEffect(2);
         BGComponent tile = null;
         switch (number) {
             case 0:

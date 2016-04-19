@@ -111,12 +111,24 @@ public class GameController extends GameState implements SocketListener {
     }
 
     public void nextTurn() {
+        gui.getViewByID("accused").setVisibility(false);
         players.get(playerTurn).setMyTurn(false);
         players.get(playerTurn).sendView();
         playerTurn = getNextPlayerNumber();
         LevelLoader.changeTurn(this, playerTurn);
         players.get(playerTurn).setMyTurn(true);
         players.get(playerTurn).sendView();
+    }
+
+    public void endGame() {
+        for (Player player : players) {
+            try {
+                player.getSession().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        gsm.pop();
     }
 
     @Override

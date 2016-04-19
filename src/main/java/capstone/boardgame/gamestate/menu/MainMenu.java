@@ -36,6 +36,7 @@ public class MainMenu extends GameState implements SocketListener {
 
     @Override
     public void init() {
+        gui.clear();
         BGComponent.setDefaultColor(Color.cyan);
 
         final Button loadGame = new Button(500, 500, 200, 60, "Load Game");
