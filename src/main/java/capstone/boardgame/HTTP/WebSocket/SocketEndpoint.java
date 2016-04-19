@@ -3,6 +3,7 @@ package capstone.boardgame.HTTP.WebSocket;
 import capstone.boardgame.HTTP.WebSocketServer;
 import capstone.boardgame.gamestate.SessionManager;
 import capstone.boardgame.main.Log;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -34,6 +35,7 @@ public class SocketEndpoint {
             //default packet handler
         }
     };
+    public static SessionManager manager;
 
     public static void setListener(SocketListener listener) {
         if (listener != null ) SocketEndpoint.listener = listener;
@@ -55,6 +57,7 @@ public class SocketEndpoint {
     @OnClose
     public void onClose(Session session, CloseReason reason) throws IOException {
         Log.d(tag, "onClose");
+        //manager.removePlayer(session);
         //SessionManager.removeSession(session);
         listener.onClose(session, reason);
 
@@ -63,10 +66,14 @@ public class SocketEndpoint {
     @OnMessage
     public void onMessage(Session session, String message) throws IOException {
         Log.d(tag, "onMessage: " + message);
-        //session.getBasicRemote().sendText(message + " (from your server)");
-        listener.onMessage(session, message);
-        //Packet.parseJson(message);
-        handler.handlePacket(session, message);
+        JSONObject obj = new JSONObject(message);
+        String command = (String) obj.get("Command");
+        manager.resetTimeout(session);
+        if (command.equals("ping")) {
+        } else {
+            listener.onMessage(session, message);
+            handler.handlePacket(session, message);
+        }
     }
 
     @OnError

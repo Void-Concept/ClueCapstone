@@ -1,5 +1,7 @@
 package capstone.boardgame.gamestate;
 
+import capstone.boardgame.HTTP.WebSocket.Packet;
+import capstone.boardgame.HTTP.WebSocket.SocketEndpoint;
 import capstone.boardgame.gamestate.ingame.GameController;
 import capstone.boardgame.gamestate.menu.MainMenu;
 import capstone.boardgame.main.Log;
@@ -23,6 +25,7 @@ public class GameStateManager implements MouseListener {
         states = new Stack<>();
         states.push(new MainMenu(this));
         sessions = new SessionManager();
+        SocketEndpoint.manager = sessions;
     }
 
     public void loadGame(String gameid) {
@@ -43,7 +46,23 @@ public class GameStateManager implements MouseListener {
         return sessions.getPlayers();
     }
 
+    private int ticks = 0;
     public void tick(double deltaTime) {
+        ticks++;
+        if (ticks >= 60) {
+            ticks = 0;
+            Packet packet = new Packet();
+            packet.setCommand("ping");
+            for (Session session : sessions.getPlayers()) {
+                try {
+                    session.getBasicRemote().sendText(packet.getJson());
+                } catch (Exception e) {
+                    removePlayer(session);
+                    e.printStackTrace();
+                }
+            }
+            sessions.disconnectInactiveSessions();
+        }
         states.peek().tick(deltaTime);
     }
 

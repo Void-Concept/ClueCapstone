@@ -175,6 +175,7 @@ public class GameController extends GameState implements SocketListener {
 
     @Override
     public void render(Graphics2D g) {
+        ((Label)gui.getViewByID("NumPlayers")).setText("" + gsm.getPlayerCount());
         gui.render(g);
         for (Player player : players) {
             player.render(g);

@@ -96,6 +96,13 @@ public class MainMenu extends GameState implements SocketListener {
 
     @Override
     public void render(Graphics2D g) {
+        Label connectionLabel = (Label)gui.getViewByID("connections");
+        connectionLabel.setText(""+gsm.getPlayerCount());
+        if (gsm.getPlayerCount() > 1 && gsm.getPlayerCount() <= 6) {
+            connectionLabel.setColor(Color.green);
+        } else {
+            connectionLabel.setColor(Color.red);
+        }
         gui.render(g);
     }
 

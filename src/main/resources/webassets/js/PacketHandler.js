@@ -19,6 +19,11 @@ function PacketHandler() {
 				case "reject":
 					console.log("TODO: reject");
 					break;
+				case "ping":
+				    var packet = new Packet();
+                	packet.command = "ping";
+                	send(packet.getJson());
+				    break;
 			}
 		} catch(err) {
 			console.log(err);
