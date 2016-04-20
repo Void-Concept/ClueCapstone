@@ -75,6 +75,8 @@ public class LevelLoader {
 
         Label range = new Label(800, 20, "Moves left: 0");
         range.setId("moves");
+        range.setColor(Color.white);
+        range.applyEffect(2);
         drawables.add(range);
 
         Button turn = new Button(530, 10, 220, 40, "Prof. Plum's Turn");
