@@ -60,6 +60,7 @@ public class GameController extends GameState implements SocketListener {
     @Override
     public void init() {
         BGComponent.setDefaultColor(Color.black);
+        BGComponent.setDefaultBackgroundColor(new Color(0,0,0,0));
         gui.setBackgroundColor(Color.gray);
 
         //add gui elements

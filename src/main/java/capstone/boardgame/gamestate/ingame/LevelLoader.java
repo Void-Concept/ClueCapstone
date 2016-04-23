@@ -38,6 +38,8 @@ public class LevelLoader {
     public static ArrayList<BGComponent> loadLevel(String path) {
         //ignore path for now
         ArrayList<BGComponent> drawables = new ArrayList<>();
+        BGComponent.setDefaultBackgroundColor(new Color(0,0,0,0));
+        Button.setDefaultBackgroundColor(new Color(0,0,0,0));
 
         SpriteSheet sheet = new SpriteSheet();
         sheet.setSpriteSheet(LoadImageFrom.LoadImageFrom(Main.class, "clue/spritesheet.png"));
