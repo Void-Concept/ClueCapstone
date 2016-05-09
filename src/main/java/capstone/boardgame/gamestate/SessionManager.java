@@ -1,5 +1,6 @@
 package capstone.boardgame.gamestate;
 
+import capstone.boardgame.HTTP.WebSocket.SocketEndpoint;
 import capstone.boardgame.main.Log;
 
 import javax.websocket.Session;
@@ -52,6 +53,7 @@ public class SessionManager {
                 try {
                     ts.session.close();
                     removePlayer(ts.session);
+                    SocketEndpoint.getListener().onClose(ts.session, null);
                 } catch (Exception e) {}
             }
         }

@@ -215,6 +215,7 @@ public class LevelLoader {
                 token.addFlag("xoff", -3);
                 token.addFlag("yoff", 3);
                 token.addFlag("suspect", suspects[0]);
+                //token.setColor(new Color(0xA8, 0x50, 0xA8));
                 token.setColor(Color.magenta);
                 Log.d(tag, "Prof. Plum");
                 break;
@@ -223,7 +224,8 @@ public class LevelLoader {
                 token.addFlag("xoff", 3);
                 token.addFlag("yoff", 3);
                 token.addFlag("suspect", suspects[1]);
-                token.setColor(Color.red);
+                //token.setColor(new Color(0x8B, 0, 0));
+                token.setColor(Color.RED);
                 Log.d(tag, "Ms. Scarlett");
                 break;
             case 2:
@@ -231,7 +233,8 @@ public class LevelLoader {
                 token.addFlag("xoff", 0);
                 token.addFlag("yoff", 4);
                 token.addFlag("suspect", suspects[2]);
-                token.setColor(Color.yellow);
+                //token.setColor(new Color(0xF5, 0xD0, 0x4C));
+                token.setColor(Color.YELLOW);
                 Log.d(tag, "Colonel Mustard");
                 break;
             case 3:
@@ -247,7 +250,8 @@ public class LevelLoader {
                 token.addFlag("xoff", -3);
                 token.addFlag("yoff", -3);
                 token.addFlag("suspect", suspects[4]);
-                token.setColor(Color.green);
+                token.setColor(new Color(0x22, 0x8B, 0x22));
+                //token.setColor(Color.green);
                 Log.d(tag, "Mr. Green");
                 break;
             case 5:
@@ -255,6 +259,7 @@ public class LevelLoader {
                 token.addFlag("xoff", 0);
                 token.addFlag("yoff", -4);
                 token.addFlag("suspect", suspects[5]);
+                //token.setColor(new Color(0x41, 0x69, 0xE1));
                 token.setColor(Color.blue);
                 Log.d(tag, "Ms. Peacock");
                 break;

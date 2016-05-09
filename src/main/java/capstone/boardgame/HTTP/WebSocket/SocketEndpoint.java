@@ -40,6 +40,10 @@ public class SocketEndpoint {
     public static void setListener(SocketListener listener) {
         if (listener != null ) SocketEndpoint.listener = listener;
     }
+    public static SocketListener getListener() {
+        return listener;
+    }
+
     public static void setPacketHandler(PacketHandler handler) { if (handler != null) SocketEndpoint.handler = handler; }
 
     @OnOpen
