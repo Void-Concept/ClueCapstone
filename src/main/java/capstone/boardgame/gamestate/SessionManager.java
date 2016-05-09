@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class SessionManager {
     private static final String tag = "SessionManager";
     private ArrayList<TimeoutSession> players = new ArrayList<>();
-    public static long timeout = 2000;
+    public static long timeout = 3000;
 
     public class TimeoutSession {
         public Session session;

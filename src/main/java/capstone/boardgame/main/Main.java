@@ -37,7 +37,7 @@ public class Main {
             e.printStackTrace();
         }
         WebSocketServer.runServer();
-        WebServer.start();
+        WebServer.start(80);
     }
 
     private static WindowListener windowListener = new WindowListener() {

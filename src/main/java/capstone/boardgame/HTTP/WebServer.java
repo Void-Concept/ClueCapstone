@@ -43,16 +43,19 @@ public class WebServer {
         }
     }
 
-    public static void start() {
+    public static void start(int port) {
         try {
             Game.getInstance(); //tell Game to load resources
             Log.d(tag, "WebServer starting");
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/", new MyHandler());
             server.setExecutor(null); // creates a default executor
             server.start();
         } catch (Exception e) {
             Log.d(tag, "Server failed to start");
+            if (port != 8000) {
+                start(8000);
+            }
         }
     }
 }
