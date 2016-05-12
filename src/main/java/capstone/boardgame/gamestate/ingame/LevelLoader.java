@@ -17,6 +17,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,8 +159,8 @@ public class LevelLoader {
 
         try {
             URL boardLoader = LevelLoader.class.getClassLoader().getResource("clue/boardMovement.txt");
-            FileReader fr = new FileReader(boardLoader.getFile());
-            BufferedReader br = new BufferedReader(fr);
+            //FileReader fr = new FileReader(boardLoader.getFile());
+            BufferedReader br = new BufferedReader(new InputStreamReader(boardLoader.openStream()));
             ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
             String line;
             ArrayList<String> sLine;
