@@ -92,6 +92,12 @@ public class LevelLoader {
         players.setColor(Color.GREEN);
         drawables.add(players);
 
+        Button endGame = new Button(10, 5, 130, 35, "Restart Game");
+        endGame.setId("EndGame");
+        endGame.setColor(Color.black);
+        //endGame.setBackgroundColor(Color.white);
+        drawables.add(endGame);
+
         drawables.add(createBoardAccusation());
         return drawables;
     }

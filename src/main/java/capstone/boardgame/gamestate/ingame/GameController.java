@@ -1,9 +1,9 @@
 package capstone.boardgame.gamestate.ingame;
 
 import capstone.boardgame.GUI.BGContainer;
-import capstone.boardgame.GUI.Component.BGComponent;
+import capstone.boardgame.GUI.Component.*;
+import capstone.boardgame.GUI.Component.Button;
 import capstone.boardgame.GUI.Component.Label;
-import capstone.boardgame.GUI.Component.Token;
 import capstone.boardgame.GUI.Drawable.BGDrawable;
 import capstone.boardgame.GUI.GameGUIContainer;
 import capstone.boardgame.HTTP.WebSocket.Packet;
@@ -18,6 +18,7 @@ import javax.websocket.CloseReason;
 import javax.websocket.Session;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -66,6 +67,32 @@ public class GameController extends GameState implements SocketListener {
         //add gui elements
         gui.addAll(LevelLoader.loadLevel(""));
         ((Label)gui.getViewByID("NumPlayers")).setText("" + gsm.getPlayerCount());
+        ((Button)gui.getViewByID("EndGame")).setMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                GameController.this.endGame();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         //set up player objects
         ArrayList<Session> sessions = gsm.getPlayers();
